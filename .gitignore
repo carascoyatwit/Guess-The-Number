@@ -1,0 +1,17 @@
+# Eclipse build output
+bin/
+
+# Eclipse project metadata (optional to share)
+.settings/
+
+# Eclipse project files (optional to share, but often OK)
+.classpath
+.project
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Java temporary files
+*.class
+

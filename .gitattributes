@@ -1,0 +1,5 @@
+# Make all text files normalized
+* text=auto
+
+# Ensure Java files use LF (works on Linux and Windows)
+*.java text

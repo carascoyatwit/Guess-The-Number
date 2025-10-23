@@ -1,5 +1,3 @@
-# Make all text files normalized
+# Makes repo more compatible through different OS
 * text=auto
-
-# Ensure Java files use LF (works on Linux and Windows)
 *.java text

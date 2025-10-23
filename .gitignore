@@ -1,10 +1,7 @@
-# Eclipse build output
 bin/
 
-# Eclipse project metadata (optional to share)
+# Eclipse specific files
 .settings/
-
-# Eclipse project files (optional to share, but often OK)
 .classpath
 .project
 
@@ -12,6 +9,6 @@ bin/
 .DS_Store
 Thumbs.db
 
-# Java temporary files
+# Java compile info.
 *.class
 

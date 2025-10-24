@@ -14,8 +14,6 @@ public class Server {
 			
 			while (clients <= 5) {
 			Socket clientSocket = serverSocket.accept();
-			System.out.println("Client accepted...");
-			System.out.printf("Amount of clients: %d\n", clients);
 		
 			int clientID = clients; 
 			clients++;
@@ -38,22 +36,34 @@ public class Server {
 		
 		try {
 			
-			String guess = "";
 			
 			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // update this when using java client, temp for nectat testing
+			PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
 			
+			String clientName = input.readLine();
+			
+			if (clientName == null || clientName.isEmpty()) {
+                clientName = "Unknown";
+            }
+            System.out.printf("Client %d connected as [%s]\n", clientID, clientName);
+            
+        	String guess = "";
 			while ((guess = input.readLine()) != null) {
-				System.out.printf("Client %d guessed: %s\n", clientID, guess);
+				System.out.printf("[%s] guessed: %s\n", clientName, guess);
 			}
 			
 			input.close();
 			clientSocket.close();
-			System.out.printf("Client %d disconnected.\n", clientID);
+			 System.out.printf("%s (Client %d) disconnected.\n", clientName, clientID);
 			
 		} catch (IOException e) {
 			System.out.println(e);
 		}
 		
 	}
+	
+	 public static void main(String[] args) {
+	        new Server();
+	    }
 
 }

@@ -25,13 +25,24 @@ public class Client {
 	    PrintWriter send = new PrintWriter(socket.getOutputStream(), true);
 	    BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	    
-	    String m = scan.nextLine();
-	    String message = clientName + " said: " + m;
+	    send.println(clientName);
+	   
 	    
-	    send.println(message);
+	    while(true) {
+	    	System.out.println("Enther your guess: ");	
+	    	String guess = scan.nextLine();
+	    	
+	    	if (guess.equals("exit")) {
+				System.out.println("Disconnected.");
+				break;
+	    	}
+	    
+	    send.println(guess);
 	    
 	   String recieved = input.readLine();
 	   System.out.printf("The server replied: %s\n", recieved);
+	   
+	    }
 	   
 	   scan.close();
 	   socket.close();
@@ -39,7 +50,11 @@ public class Client {
 	    }catch (IOException e) {
 	    	System.out.println(e);
 	    }
-		
+	    
 	}
+	
+	 public static void main(String[] args) {
+	        new Client();
+	    }
 
 }

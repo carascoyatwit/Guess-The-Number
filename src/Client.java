@@ -18,6 +18,14 @@ public class Client {
 	    System.out.println("Please enter your name: ");
 	    clientName = scan.nextLine();
 	    
+	    System.out.println("Would you like to create a game or join a game: ");
+	    status = scan.nextInt();
+	    scan.nextLine();
+	    
+	    if(status == 0) {
+	    	new Thread(() -> startServer()).start();
+	    }
+	    
 	    try {
 	    
 	    Socket socket = new Socket(serverName, port);
@@ -29,7 +37,7 @@ public class Client {
 	   
 	    
 	    while(true) {
-	    	System.out.println("Enther your guess: ");	
+	    	System.out.println("Enter your guess: ");	
 	    	String guess = scan.nextLine();
 	    	
 	    	if (guess.equals("exit")) {
@@ -37,11 +45,7 @@ public class Client {
 				break;
 	    	}
 	    
-	    send.println(guess);
-	    
-	   String recieved = input.readLine();
-	   System.out.printf("The server replied: %s\n", recieved);
-	   
+	   send.println(guess);
 	    }
 	   
 	   scan.close();
@@ -51,6 +55,10 @@ public class Client {
 	    	System.out.println(e);
 	    }
 	    
+	}
+	
+	public void startServer() {
+		Server server = new Server();
 	}
 	
 	 public static void main(String[] args) {

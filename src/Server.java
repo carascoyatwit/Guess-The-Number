@@ -36,30 +36,39 @@ public class Server {
 		
 		try {
 			
-			
-			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // update this when using java client, temp for nectat testing
-			PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			//PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
 			
 			String clientName = input.readLine();
-			
 			if (clientName == null || clientName.isEmpty()) {
                 clientName = "Unknown";
             }
+			
             System.out.printf("Client %d connected as [%s]\n", clientID, clientName);
             
-        	String guess = "";
-			while ((guess = input.readLine()) != null) {
+        	String guess = input.readLine();
+			if (guess != null) {
 				System.out.printf("[%s] guessed: %s\n", clientName, guess);
+				
 			}
-			
-			input.close();
-			clientSocket.close();
-			 System.out.printf("%s (Client %d) disconnected.\n", clientName, clientID);
+		
+			  idle(input); // this basically just keeps connection open until the client disconnects different form idle on client side.
+			  
+			  input.close();
+	          clientSocket.close();
+	          System.out.printf("%s (Client %d) disconnected.\n", clientName, clientID);
 			
 		} catch (IOException e) {
+			
 			System.out.println(e);
 		}
 		
+	}
+	
+	public void idle(BufferedReader input) throws IOException {
+		while (input.readLine() != null) {
+        }
+	  
 	}
 	
 	 public static void main(String[] args) {

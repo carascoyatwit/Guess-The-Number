@@ -18,43 +18,46 @@ public class Client {
 	    System.out.println("Please enter your name: ");
 	    clientName = scan.nextLine();
 	    
-	    System.out.println("Would you like to create a game or join a game: ");
+	    System.out.println("Would you like to create a game or join a game: "); // ignore this and just hit 1 when it prompts
 	    status = scan.nextInt();
 	    scan.nextLine();
 	    
-	    if(status == 0) {
+	    if(status == 0) { // ignore this for now, and just type in 1 when it prompts.
 	    	new Thread(() -> startServer()).start();
 	    }
 	    
 	    try {
 	    
 	    Socket socket = new Socket(serverName, port);
-	    
 	    PrintWriter send = new PrintWriter(socket.getOutputStream(), true);
 	    BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	    
-	    send.println(clientName);
-	   
 	    
-	    while(true) {
-	    	System.out.println("Enter your guess: ");	
-	    	String guess = scan.nextLine();
-	    	
-	    	if (guess.equals("exit")) {
-				System.out.println("Disconnected.");
-				break;
-	    	}
+	    send.println(clientName);
+	    System.out.println("Enter your guess: ");	
+	    String guess = scan.nextLine();
+
 	    
 	   send.println(guess);
-	    }
+	   idle(); // this is kind of like a just hold on a second method for editing and testing purposes, whenever you reach a point where you want it to "stop" use this method
 	   
 	   scan.close();
-	   socket.close();
-	    
+	   
 	    }catch (IOException e) {
 	    	System.out.println(e);
 	    }
 	    
+	}
+	
+	public void idle() {
+		 while (true) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+		 }
+
 	}
 	
 	public void startServer() {

@@ -5,6 +5,7 @@ public class Server {
     private ServerSocket serverSocket = null;
     private int port = 8080;
     private int clients = 1;
+    private int maxClients = 4;
     
     public Server() {
     	
@@ -12,7 +13,7 @@ public class Server {
 			serverSocket = new ServerSocket(port);
 			System.out.println("Server started...");
 			
-			while (clients <= 5) {
+			while (clients <= maxClients) {
 			Socket clientSocket = serverSocket.accept();
 		
 			int clientID = clients; 
@@ -38,6 +39,7 @@ public class Server {
 			
 			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			//PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+			//use above printwriter when you want to send stuff to client. 
 			
 			String clientName = input.readLine();
 			if (clientName == null || clientName.isEmpty()) {
@@ -63,6 +65,14 @@ public class Server {
 			System.out.println(e);
 		}
 		
+	}
+	
+	public int getMaxClients() {
+		return this.maxClients;
+	}
+	
+	public void setMaxClients(int maxClients) {
+		this.maxClients = maxClients;
 	}
 	
 	public void idle(BufferedReader input) throws IOException {

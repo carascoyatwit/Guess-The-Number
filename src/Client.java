@@ -36,12 +36,14 @@ public class Client {
 	    send.println(clientName);
 	    System.out.println("Enter your guess: ");	
 	    String guess = scan.nextLine();
-
-	    
-	   send.println(guess);
+	    send.println(guess);
+	   
 	   idle(); // this is kind of like a just hold on a second method for editing and testing purposes, whenever you reach a point where you want it to "stop" use this method
 	   
 	   scan.close();
+	   socket.close();
+	   send.close();
+	   input.close();
 	   
 	    }catch (IOException e) {
 	    	System.out.println(e);

@@ -5,6 +5,7 @@ public class Server {
     private ServerSocket serverSocket = null;
     private int port = 8080;
     private int clients = 1;
+    private int maxClients = 4;
     
     public Server() {
     	
@@ -12,10 +13,8 @@ public class Server {
 			serverSocket = new ServerSocket(port);
 			System.out.println("Server started...");
 			
-			while (clients <= 5) {
+			while (clients <= maxClients) {
 			Socket clientSocket = serverSocket.accept();
-			System.out.println("Client accepted...");
-			System.out.printf("Amount of clients: %d\n", clients);
 		
 			int clientID = clients; 
 			clients++;
@@ -38,22 +37,52 @@ public class Server {
 		
 		try {
 			
-			String guess = "";
+			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			//PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+			//use above printwriter when you want to send stuff to client. 
 			
-			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // update this when using java client, temp for nectat testing
+			String clientName = input.readLine();
+			if (clientName == null || clientName.isEmpty()) {
+                clientName = "Unknown";
+            }
 			
-			while ((guess = input.readLine()) != null) {
-				System.out.printf("Client %d guessed: %s\n", clientID, guess);
+            System.out.printf("Client %d connected as [%s]\n", clientID, clientName);
+            
+        	String guess = input.readLine();
+			if (guess != null) {
+				System.out.printf("[%s] guessed: %s\n", clientName, guess);
+				
 			}
-			
-			input.close();
-			clientSocket.close();
-			System.out.printf("Client %d disconnected.\n", clientID);
+		
+			  idle(input); // this basically just keeps connection open until the client disconnects different form idle on client side.
+			  
+			  input.close();
+	          clientSocket.close();
+	          System.out.printf("%s (Client %d) disconnected.\n", clientName, clientID);
 			
 		} catch (IOException e) {
+			
 			System.out.println(e);
 		}
 		
 	}
+	
+	public int getMaxClients() {
+		return this.maxClients;
+	}
+	
+	public void setMaxClients(int maxClients) {
+		this.maxClients = maxClients;
+	}
+	
+	public void idle(BufferedReader input) throws IOException {
+		while (input.readLine() != null) {
+        }
+	  
+	}
+	
+	 public static void main(String[] args) {
+	        new Server();
+	    }
 
 }

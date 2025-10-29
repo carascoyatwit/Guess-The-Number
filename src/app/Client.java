@@ -3,8 +3,13 @@ package app;
 import java.util.Scanner;
 import java.io.*;
 import java.net.*;
+import javafx.application.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 
-public class Client {
+public class Client{
 	
 	private String clientName;
 	private String serverName = "localhost";
@@ -70,5 +75,5 @@ public class Client {
 	 public static void main(String[] args) {
 	        new Client();
 	    }
-
+	 
 }

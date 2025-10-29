@@ -1,11 +1,9 @@
 package app;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import app.misc.*;
+import javafx.scene.*;
+import javafx.stage.*;
 
 public class Gui extends Application{
 
@@ -14,19 +12,20 @@ public class Gui extends Application{
 	    }
 
 	 @Override
-	 public void start(Stage primaryStage) throws Exception {
-	        Label label = new Label("Yan's Java FX Project");
-
+	 public void start(Stage stage) throws Exception {
+//	        Label label = new Label("Yan's Java FX Project");
+//
 //	        startButton.setOnAction(e -> {
 //	            new Thread(() -> {Client client = new Client();}).start();
 //	        });
 //	        
-	        StackPane root = new StackPane(label);
-	        Scene scene = new Scene(root, 400, 200);
-
-	        primaryStage.setTitle("JavaFX Barebones");
-	        primaryStage.setScene(scene);
-	        primaryStage.show();
+//	        StackPane root = new StackPane(label);
+	        Scene scene = SceneLoader.sceneLoader("Scene1");
+	        stage.setTitle("Guess The Number");
+	        stage.setWidth(800);   // desired width
+	        stage.setHeight(600);
+	        stage.setScene(scene);
+	        stage.show();
 		
 	 }
 

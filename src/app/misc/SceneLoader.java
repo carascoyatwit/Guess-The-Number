@@ -9,14 +9,16 @@ import javafx.scene.*;
 
 public class SceneLoader {
 
-	public SceneLoader(String name) {
+	public static Scene sceneLoader(String name) {
         try {
-        	FXMLLoader loader = new FXMLLoader(SceneLoader.class.getResource("/Gui/" + name + ".fxml"));
+        	FXMLLoader loader = new FXMLLoader(SceneLoader.class.getResource("/app/guiConfigs/" + name + ".fxml"));
 			Parent root = loader.load();
-			root.getStylesheets().add(SceneLoader.class.getResource("/Gui/" + name + ".css").toExternalForm());
-			
+			String cssPath = SceneLoader.class.getResource("/app/guiConfigs/" + name + ".css").toExternalForm();
+			root.getStylesheets().add(cssPath);
+	        return new Scene(root);
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
         
 	}

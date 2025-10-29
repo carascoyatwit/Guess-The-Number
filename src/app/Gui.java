@@ -14,13 +14,6 @@ public class Gui extends Application{
 
 	 @Override
 	 public void start(Stage stage) throws Exception {
-//	        Label label = new Label("Yan's Java FX Project");
-//
-//	        startButton.setOnAction(e -> {
-//	            new Thread(() -> {Client client = new Client();}).start();
-//	        });
-//	        
-//	        StackPane root = new StackPane(label);
 		 	Font.loadFont(getClass().getResource("/app/fonts/Nunito-Regular.ttf").toExternalForm(), 12);
 	        Scene scene = SceneLoader.sceneLoader("Scene1");
 	        stage.setTitle("Guess The Number");

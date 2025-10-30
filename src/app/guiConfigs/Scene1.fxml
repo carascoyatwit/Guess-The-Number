@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Scene1">
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Scene1">
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="centerVBox" BorderPane.alignment="TOP_CENTER">
+      <VBox fx:id="centerVBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="centerVBox" BorderPane.alignment="TOP_CENTER">
          <children>
             <Label id="mainTitle" text="Guess The Number" />
-            <HBox id="centerHBox" alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="200.0" spacing="40.0" VBox.vgrow="NEVER">
+            <HBox id="centerHBox" fx:id="centerHBox" alignment="CENTER" prefHeight="70.0" prefWidth="200.0">
                <children>
-                  <Button id="createButton" mnemonicParsing="false" text="Create a Game" />
-                  <Button id="joinButton" mnemonicParsing="false" text="Join a Game" />
+                  <Button id="createButton" fx:id="createButton" mnemonicParsing="false" text="Create a Game" />
+                  <Button id="joinButton" fx:id="joinButton" mnemonicParsing="false" text="Join a Game" />
                </children>
                <opaqueInsets>
                   <Insets />

@@ -23,9 +23,6 @@
             </HBox>
          </children></VBox>
    </center>
-   <top>
-      <VBox prefHeight="70.0" prefWidth="30.0" styleClass="topVBox" BorderPane.alignment="CENTER" />
-   </top>
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="leftVBox" BorderPane.alignment="CENTER" />
    </left>
@@ -35,4 +32,11 @@
    <bottom>
       <VBox prefHeight="70.0" prefWidth="30.0" styleClass="bottomVBox" BorderPane.alignment="CENTER" />
    </bottom>
+   <top>
+      <HBox fx:id="topHBox" alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="configButton" mnemonicParsing="false" />
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

@@ -21,7 +21,7 @@ public class Scene2 {
 	public void initialize() {
 		new Thread(() -> new Client()).start();
 		
-		for(int i = 0; i < Server.setClients; i++) {
+		for(int i = 0; i < UserConfigs.getSetClients(); i++) {
 			Label lbl = new Label();
 			list.add(lbl);
 			centerHBox.getChildren().add(lbl);

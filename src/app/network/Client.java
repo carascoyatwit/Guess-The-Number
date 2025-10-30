@@ -1,16 +1,13 @@
 package app.network;
 
 import java.util.Scanner;
+
+import app.*;
 import java.io.*;
 import java.net.*;
 
 
 public class Client{
-	
-	public static  String clientName = "defualt";
-	public static String serverName = "localhost";
-	public static int port = 8081;
-	public static boolean status = true;  // true is for host false is for join
 	
 	public Client() {
 		
@@ -18,12 +15,12 @@ public class Client{
 	        
 	    try {
 	    
-	    Socket socket = new Socket(serverName, port);
+	    Socket socket = new Socket(UserConfigs.getServerHost(), UserConfigs.getServerPort());
 	    PrintWriter send = new PrintWriter(socket.getOutputStream(), true);
 	    BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	    
 	    
-	    send.println(clientName);
+	    send.println(UserConfigs.getClientName());
 	    System.out.println("Enter your guess: ");	
 	    String guess = scan.nextLine();
 	    send.println(guess);
@@ -51,14 +48,6 @@ public class Client{
 		 }
 
 	}
-	
-	 public static void setClientName(String name) {
-	        clientName = name;
-	    }
-
-	    public static void setStatus(boolean s) {
-	        status = s;
-	    }
 	
 	 public static void main(String[] args) {
 	        new Client();

@@ -40,8 +40,21 @@
 	-fx-background-color: #FFFFFF80;  
 }
 
+#configButton {
+	 -fx-padding: 20;
+    -fx-background-color: #1A1A2F;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15px;
+    -fx-pref-width: -1;   
+    -fx-pref-height: -1; 
+}
+
 #createButton:hover {
     -fx-background-color: #FFFFFFAA;
+}
+
+#configButton:hover {
+    -fx-background-color: #15152A; /* slightly darker on hover */
 }
 
 #joinButton:hover {

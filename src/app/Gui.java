@@ -15,11 +15,11 @@ public class Gui extends Application{
 	 @Override
 	 public void start(Stage stage) throws Exception {
 		 	Font.loadFont(getClass().getResource("/app/fonts/Nunito-Regular.ttf").toExternalForm(), 12);
-	        Scene scene = SceneLoader.sceneLoader("Scene1");
+	        Scene scene1 = SceneLoader.sceneLoader("Scene1");
 	        stage.setTitle("Guess The Number");
-	        stage.setWidth(800);   // desired width
-	        stage.setHeight(600);
-	        stage.setScene(scene);
+	        stage.setWidth(1200);   // desired width
+	        stage.setHeight(800);
+	        stage.setScene(scene1);
 	        stage.show();
 
 	 }

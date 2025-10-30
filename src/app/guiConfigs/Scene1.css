@@ -12,6 +12,15 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.button {
+-fx-pref-width: 200px; 
+-fx-pref-height: 50px;
+-fx-font-size: 20px;
+-fx-border-width: 3.5;
+-fx-background-radius: 15px;
+-fx-border-radius: 15px; 
+}
+
 /* The main title label */
 #mainTitle {
     -fx-font-size: 55px;
@@ -20,11 +29,13 @@
 }
 
 #createButton {
-	-fx-pref-width: 200px; 
-	-fx-pref-height: 50px;  
+	-fx-text-fill: #FFFFFF;
+	-fx-border-color: #FFFFFF;
+	-fx-background-color: #FFFFFF80;  
 }
 
 #joinButton {
-	-fx-pref-width: 200px; 
-	-fx-pref-height: 50px; 
+	-fx-text-fill: #FFFFFF;
+	-fx-border-color: #FFFFFF;
+	-fx-background-color: #FFFFFF80;  
 }

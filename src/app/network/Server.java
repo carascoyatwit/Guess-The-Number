@@ -5,8 +5,8 @@ import java.net.*;
 public class Server {
     private ServerSocket serverSocket = null;
     private int port = 8080;
-    private int clients = 1;
-    private int maxClients = 4;
+    public static int clients = 1;
+    public static int maxClients = 4;
     
     public Server() {
     	

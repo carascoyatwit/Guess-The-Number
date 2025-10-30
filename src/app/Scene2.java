@@ -1,9 +1,18 @@
 package app;
 
-public class Scene2 {
+import javafx.fxml.*;
+import javafx.scene.layout.*;
 
-	public Scene2() {
-	 
+public class Scene2 {
+	
+	@FXML
+	private VBox centerVBox;
+	
+	@FXML 
+	private HBox centerHBox;
+
+	public void initialize() {
+		
 	}
 
 }

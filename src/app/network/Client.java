@@ -3,32 +3,28 @@ package app.network;
 import java.util.Scanner;
 import java.io.*;
 import java.net.*;
-import javafx.application.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
+
 
 public class Client{
 	
-	private String clientName;
+	public static  String clientName = "defualt";
 	private String serverName = "localhost";
 	private int port = 8080;
-	private int status;  // 0 is host and 1 is join for now
+	public static boolean status = true;  // true is for host false is for join
 	
-
 	public Client() {
 		
 	    Scanner scan = new Scanner(System.in);
 	    
-	    System.out.println("Please enter your name: ");
-	    clientName = scan.nextLine();
+//	    System.out.println("Please enter your name: ");
+//	    clientName = scan.nextLine();
+//	    
+//	    System.out.println("Would you like to create a game or join a game: "); // ignore this and just hit 1 when it prompts
+//	    status = scan.nextInt();
 	    
-	    System.out.println("Would you like to create a game or join a game: "); // ignore this and just hit 1 when it prompts
-	    status = scan.nextInt();
-	    scan.nextLine();
 	    
-	    if(status == 0) { // ignore this for now, and just type in 1 when it prompts.
+	    
+	    if(status) { // ignore this for now, and just type in 1 when it prompts.
 	    	new Thread(() -> startServer()).start();
 	    }
 	    
@@ -71,6 +67,14 @@ public class Client{
 	public void startServer() {
 		Server server = new Server();
 	}
+	
+	 public static void setClientName(String name) {
+	        clientName = name;
+	    }
+
+	    public static void setStatus(boolean status) {
+	        status = status;
+	    }
 	
 	 public static void main(String[] args) {
 	        new Client();

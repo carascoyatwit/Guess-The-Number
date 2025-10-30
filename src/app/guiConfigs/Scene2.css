@@ -11,6 +11,10 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.button:hover {
+    -fx-background-color: #FFFFFFAA;
+}
+
 .button {
 -fx-pref-width: 200px; 
 -fx-pref-height: 50px;

@@ -1,5 +1,7 @@
 package app;
 
+import java.util.Optional;
+
 import app.misc.*;
 import app.network.*;
 import javafx.fxml.*;
@@ -32,14 +34,52 @@ public class Scene1 {
 		emptyNode(centerVBox, 0, 0, true); //(pane you want it in, index, size, true = VBox false = Hbox)
 
         createButton.setOnAction(e -> createGame());
-        joinButton.setOnAction(e -> System.out.println("Join Game clicked!"));
+        joinButton.setOnAction(e -> joinGame());
         
 	}
 	
 	private void createGame() {
-		Stage stage = (Stage) createButton.getScene().getWindow();
-	    Scene scene = SceneLoader.sceneLoader("Scene2");
-	    stage.setScene(scene);
+		
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Enter Name");
+		dialog.setHeaderText("Please provide your name");
+		dialog.setContentText("Name:");
+		
+		DialogPane pane = dialog.getDialogPane();
+		pane.getStylesheets().add(getClass().getResource("guiConfigs/dialog.css").toExternalForm());
+		pane.getStyleClass().add("dialog-pane");
+		
+	    Optional<String> result = dialog.showAndWait();
+	    
+	    result.ifPresent(name -> {
+	    	Client.setClientName(name);
+	        Stage stage = (Stage) createButton.getScene().getWindow();
+	        Scene scene = SceneLoader.sceneLoader("Scene2");
+	        stage.setScene(scene);
+	        Client.setStatus(true);
+	    });
+	}
+	
+private void joinGame() {
+		
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Enter Name");
+		dialog.setHeaderText("Please provide your name");
+		dialog.setContentText("Name:");
+		
+		DialogPane pane = dialog.getDialogPane();
+		pane.getStylesheets().add(getClass().getResource("guiConfigs/dialog.css").toExternalForm());
+		pane.getStyleClass().add("dialog-pane");
+		
+	    Optional<String> result = dialog.showAndWait();
+	    
+	    result.ifPresent(name -> {
+	    	Client.setClientName(name);
+	        Stage stage = (Stage) createButton.getScene().getWindow();
+	        Scene scene = SceneLoader.sceneLoader("Scene2");
+	        stage.setScene(scene);
+	        Client.setStatus(false);
+	    });
 	}
 	
 	public static Region emptyNode(Pane pane, int index, double size, boolean isVertical) {

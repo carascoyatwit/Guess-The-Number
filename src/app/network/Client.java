@@ -72,8 +72,8 @@ public class Client{
 	        clientName = name;
 	    }
 
-	    public static void setStatus(boolean status) {
-	        status = status;
+	    public static void setStatus(boolean s) {
+	        status = s;
 	    }
 	
 	 public static void main(String[] args) {

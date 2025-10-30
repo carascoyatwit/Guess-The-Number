@@ -17,7 +17,7 @@ public class Gui extends Application{
 		 	Font.loadFont(getClass().getResource("/app/fonts/Nunito-Regular.ttf").toExternalForm(), 12);
 	        Scene scene1 = SceneLoader.sceneLoader("Scene1");
 	        stage.setTitle("Guess The Number");
-	        stage.setWidth(1200);   // desired width
+	        stage.setWidth(1200);  
 	        stage.setHeight(800);
 	        stage.setScene(scene1);
 	        stage.show();

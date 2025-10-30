@@ -39,3 +39,11 @@
 	-fx-border-color: #FFFFFF;
 	-fx-background-color: #FFFFFF80;  
 }
+
+#createButton:hover {
+    -fx-background-color: #FFFFFFAA;
+}
+
+#joinButton:hover {
+    -fx-background-color: #FFFFFFAA;
+}

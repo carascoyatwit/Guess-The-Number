@@ -1,12 +1,18 @@
 package app;
 
 import java.util.Optional;
+
+import app.*;
+import app.misc.SceneLoader;
+import app.network.Server;
 import javafx.fxml.*;
-import javafx.geometry.Insets;
+import javafx.geometry.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.*;
 
 
 public class Scene1 {
@@ -50,56 +56,24 @@ public class Scene1 {
 		
         createButton.setOnAction(e -> createGame());
         joinButton.setOnAction(e -> joinGame());
+        configButton.setOnAction(e -> showConfigDialog());
         
 	}
 	
 	private void createGame() {
-//		
-//		TextInputDialog dialog = new TextInputDialog();
-//		dialog.setTitle("Enter Name");
-//		dialog.setHeaderText("Please provide your name");
-//		dialog.setContentText("Name:");
-//		
-//		DialogPane pane = dialog.getDialogPane();
-//		pane.getStylesheets().add(getClass().getResource("guiConfigs/dialog.css").toExternalForm());
-//		pane.getStyleClass().add("dialog-pane");
-//		
-//	    Optional<String> result = dialog.showAndWait();
-//	    
-//	    result.ifPresent(name -> {
-//	    	Client.setClientName(name);
-//	    	Client.setStatus(true);
-//	    	new Thread(() -> new Server()).start();
-//	        Stage stage = (Stage) createButton.getScene().getWindow();
-//	        Scene scene = SceneLoader.sceneLoader("Scene2");
-//	        stage.setScene(scene);
-//	    });
 		
-		
-		
+	  new Thread(() -> new Server()).start();
+	  
+      Stage stage = (Stage) createButton.getScene().getWindow();
+      Scene scene = SceneLoader.sceneLoader("Scene2");
+      stage.setScene(scene);
+
 		
 	}
 	
 private void joinGame() {
-//		
-//		TextInputDialog dialog = new TextInputDialog();
-//		dialog.setTitle("Enter Name");
-//		dialog.setHeaderText("Please provide your name");
-//		dialog.setContentText("Name:");
-//		
-//		DialogPane pane = dialog.getDialogPane();
-//		pane.getStylesheets().add(getClass().getResource("guiConfigs/dialog.css").toExternalForm());
-//		pane.getStyleClass().add("dialog-pane");
-//		
-//	    Optional<String> result = dialog.showAndWait();
-//	    
-//	    result.ifPresent(name -> {
-//	    	Client.setClientName(name);
-//	    	Client.setStatus(false);
-//	        Stage stage = (Stage) createButton.getScene().getWindow();
-//	        Scene scene = SceneLoader.sceneLoader("Scene2");
-//	        stage.setScene(scene);
-//	    });
+
+	
 	}
 	
 	public static Region emptyNode(Pane pane, int index, double size, boolean isVertical) {
@@ -115,6 +89,62 @@ private void joinGame() {
 	    }
 	    pane.getChildren().add(index, spacer);
 	    return spacer;
+	}
+	
+	private void showConfigDialog() {
+	    
+	    Dialog<Void> dialog = new Dialog<>();
+	    dialog.setTitle("Game Configurations");
+	    dialog.setHeaderText("Edit your Game Configurations:");
+
+	  
+	    DialogPane pane = dialog.getDialogPane();
+	    pane.getStylesheets().add(getClass().getResource("guiConfigs/dialog.css").toExternalForm());
+	    pane.getStyleClass().add("dialog-pane");
+
+	    
+	    TextField nameField = new TextField();
+	    nameField.setPromptText("Please Enter Your Name:");
+
+	    Spinner<Integer> setPlayersSpinner = new Spinner<>(2, 10, UserConfigs.getSetClients());
+
+	    TextField hostField = new TextField(UserConfigs.getServerHost());
+	    TextField portField = new TextField(String.valueOf(UserConfigs.getServerPort()));
+
+	    // Layout
+	    VBox content = new VBox(10);
+	    content.getChildren().addAll(
+	        new Label("Name:"), nameField,
+	        new Label("Max Players:"), setPlayersSpinner,
+	        new Label("Server Host:"), hostField,
+	        new Label("Server Port:"), portField
+	    );
+	    pane.setContent(content);
+
+	    ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+	    ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+	    dialog.getDialogPane().getButtonTypes().addAll(saveButton, cancelButton);
+
+	    dialog.setResultConverter(dialogButton -> {
+	        if (dialogButton == saveButton) {
+	            
+	            UserConfigs.setClientName(nameField.getText());
+	            UserConfigs.setSetClients(setPlayersSpinner.getValue());
+	            UserConfigs.setServerHost(hostField.getText());
+	            UserConfigs.setServerPort(Integer.parseInt(portField.getText()));
+//
+//	            new Thread(() -> new Server()).start();
+//
+//	            // Switch scene
+//	            Stage stage = (Stage) createButton.getScene().getWindow();
+//	            Scene scene = SceneLoader.sceneLoader("Scene2");
+//	            stage.setScene(scene);
+	        }
+	        return null;
+	    });
+
+	    // Show the dialog
+	    dialog.showAndWait();
 	}
 
 }

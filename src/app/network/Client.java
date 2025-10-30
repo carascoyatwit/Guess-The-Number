@@ -9,24 +9,16 @@ public class Client{
 	
 	public static  String clientName = "defualt";
 	private String serverName = "localhost";
-	private int port = 8080;
+	private int port = 8081;
 	public static boolean status = true;  // true is for host false is for join
 	
 	public Client() {
 		
 	    Scanner scan = new Scanner(System.in);
 	    
-//	    System.out.println("Please enter your name: ");
-//	    clientName = scan.nextLine();
-//	    
-//	    System.out.println("Would you like to create a game or join a game: "); // ignore this and just hit 1 when it prompts
-//	    status = scan.nextInt();
-	    
-	    
-	    
-	    if(status) { // ignore this for now, and just type in 1 when it prompts.
-	    	new Thread(() -> startServer()).start();
-	    }
+//	    if(status) { 
+//	    	new Thread(() -> startServer()).start();
+//	    }
 	    
 	    try {
 	    

@@ -15,6 +15,7 @@ public class Scene2 {
 	private HBox centerHBox;
 
 	public void initialize() {
+		new Thread(() -> new Server()).start();
 		new Thread(() -> new Client()).start();
 		
 		for(int i = 0; i < Server.maxClients; i++) {

@@ -2,11 +2,13 @@ package app.network;
 import java.io.*;
 import java.net.*;
 
+import app.Scene2;
+
 public class Server {
     private ServerSocket serverSocket = null;
     private int port = 8081;
-    public static int clients = 1;
-    public static int maxClients = 4;
+    public static int clients;
+    public static int setClients = 4;
     
     public Server() {
     	
@@ -14,10 +16,11 @@ public class Server {
 			serverSocket = new ServerSocket(port);
 			System.out.println("Server started...");
 			
-			while (clients <= maxClients) {
+			while (clients < setClients) {
 			Socket clientSocket = serverSocket.accept();
 		
-			int clientID = clients; 
+			int clientID = clients;
+			Scene2.updateConnected(clientID);
 			clients++;
 			
 			new Thread(() -> handleClient(clientSocket, clientID)).start();
@@ -47,7 +50,7 @@ public class Server {
                 clientName = "Unknown";
             }
 			
-            System.out.printf("Client %d connected as [%s]\n", clientID, clientName);
+            System.out.printf("%s Has Connected...\n", clientName);
             
         	String guess = input.readLine();
 			if (guess != null) {
@@ -59,7 +62,8 @@ public class Server {
 			  
 			  input.close();
 	          clientSocket.close();
-	          System.out.printf("%s (Client %d) disconnected.\n", clientName, clientID);
+	          System.out.printf("%s Has Disconnected.\n", clientName);
+	          Scene2.updateDisconnected(clientID);
 			
 		} catch (IOException e) {
 			
@@ -68,13 +72,16 @@ public class Server {
 		
 	}
 	
-	public int getMaxClients() {
-		return this.maxClients;
+	public static int getClients() {
+		return setClients;
 	}
 	
-	public void setMaxClients(int maxClients) {
-		this.maxClients = maxClients;
+	public static void setClients(int maxClients) {
+		setClients = maxClients;
 	}
+	
+	
+	
 	
 	public void idle(BufferedReader input) throws IOException {
 		while (input.readLine() != null) {
@@ -83,7 +90,7 @@ public class Server {
 	}
 	
 	 public static void main(String[] args) {
-	        new Server();
+		 new Server();
 	    }
 
 }

@@ -53,10 +53,11 @@ public class Scene1 {
 	    
 	    result.ifPresent(name -> {
 	    	Client.setClientName(name);
+	    	Client.setStatus(true);
+	    	new Thread(() -> new Server()).start();
 	        Stage stage = (Stage) createButton.getScene().getWindow();
 	        Scene scene = SceneLoader.sceneLoader("Scene2");
 	        stage.setScene(scene);
-	        Client.setStatus(true);
 	    });
 	}
 	
@@ -75,10 +76,10 @@ private void joinGame() {
 	    
 	    result.ifPresent(name -> {
 	    	Client.setClientName(name);
+	    	Client.setStatus(false);
 	        Stage stage = (Stage) createButton.getScene().getWindow();
 	        Scene scene = SceneLoader.sceneLoader("Scene2");
 	        stage.setScene(scene);
-	        Client.setStatus(false);
 	    });
 	}
 	

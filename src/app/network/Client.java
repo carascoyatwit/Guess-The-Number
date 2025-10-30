@@ -8,18 +8,14 @@ import java.net.*;
 public class Client{
 	
 	public static  String clientName = "defualt";
-	private String serverName = "localhost";
-	private int port = 8081;
+	public static String serverName = "localhost";
+	public static int port = 8081;
 	public static boolean status = true;  // true is for host false is for join
 	
 	public Client() {
 		
 	    Scanner scan = new Scanner(System.in);
-	    
-//	    if(status) { 
-//	    	new Thread(() -> startServer()).start();
-//	    }
-	    
+	        
 	    try {
 	    
 	    Socket socket = new Socket(serverName, port);
@@ -54,10 +50,6 @@ public class Client{
 				}
 		 }
 
-	}
-	
-	public void startServer() {
-		Server server = new Server();
 	}
 	
 	 public static void setClientName(String name) {

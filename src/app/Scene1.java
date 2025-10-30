@@ -61,18 +61,26 @@ public class Scene1 {
 	}
 	
 	private void createGame() {
-		
-	  new Thread(() -> new Server()).start();
-	  
-      Stage stage = (Stage) createButton.getScene().getWindow();
-      Scene scene = SceneLoader.sceneLoader("Scene2");
-      stage.setScene(scene);
+	
+        new Thread(() -> new Server()).start();
+        
+        Stage stage = (Stage) createButton.getScene().getWindow();
+        Scene scene = SceneLoader.sceneLoader("Scene2");
+        stage.setScene(scene);
 
 		
 	}
 	
 private void joinGame() {
 
+	boolean done = showJoinPrompts();
+	if(done == false) {
+		return;
+	}
+
+    Stage stage = (Stage) createButton.getScene().getWindow();
+    Scene scene = SceneLoader.sceneLoader("Scene2");
+    stage.setScene(scene);
 	
 	}
 	
@@ -89,6 +97,64 @@ private void joinGame() {
 	    }
 	    pane.getChildren().add(index, spacer);
 	    return spacer;
+	}
+	
+	private boolean showJoinPrompts() {
+	    String name = askForName();
+	    if (name == null) return false;  
+	    UserConfigs.setClientName(name);
+
+	    String host = askForIP();
+	    if (host == null) return false;
+	    UserConfigs.setServerHost(host);
+
+	 
+	    Integer port = askForPort();
+	    if (port == null) return false;
+	    UserConfigs.setServerPort(port);
+	    
+	    return true;
+	}
+	
+	private String askForName() {
+	    TextInputDialog dialog = new TextInputDialog(UserConfigs.getClientName());
+	    dialog.setTitle("Name");
+	    dialog.setHeaderText("Enter your name:");
+	    dialog.setContentText("Name:");
+	    styleDialog(dialog);
+
+	    Optional<String> result = dialog.showAndWait();
+	    return result.orElse(null);  
+	}
+	
+	private String askForIP() {
+		TextInputDialog dialog = new TextInputDialog(UserConfigs.getServerHost());
+		dialog.setTitle("Host IP");
+		dialog.setHeaderText("Enter Host IP");
+		dialog.setContentText("IP:");
+		styleDialog(dialog);
+		
+		Optional<String> result = dialog.showAndWait();
+		return result.orElse(null);
+		}
+	
+	private Integer askForPort() {
+		TextInputDialog dialog = new TextInputDialog(String.valueOf(UserConfigs.getServerPort()));
+		dialog.setTitle("Host Port");
+		dialog.setHeaderText("Enter Host Port");
+		dialog.setContentText("Port:");
+		styleDialog(dialog);
+		
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()) {
+		    try {
+		        return Integer.parseInt(result.get());
+		    } catch (NumberFormatException e) {
+		        return UserConfigs.getServerPort(); 
+		    }
+		} else {
+		    return null; 
+		}
 	}
 	
 	private void showConfigDialog() {
@@ -111,12 +177,11 @@ private void joinGame() {
 	    TextField hostField = new TextField(UserConfigs.getServerHost());
 	    TextField portField = new TextField(String.valueOf(UserConfigs.getServerPort()));
 
-	    // Layout
 	    VBox content = new VBox(10);
 	    content.getChildren().addAll(
 	        new Label("Name:"), nameField,
 	        new Label("Max Players:"), setPlayersSpinner,
-	        new Label("Server Host:"), hostField,
+	        new Label("Host IP:"), hostField,
 	        new Label("Server Port:"), portField
 	    );
 	    pane.setContent(content);
@@ -132,19 +197,16 @@ private void joinGame() {
 	            UserConfigs.setSetClients(setPlayersSpinner.getValue());
 	            UserConfigs.setServerHost(hostField.getText());
 	            UserConfigs.setServerPort(Integer.parseInt(portField.getText()));
-//
-//	            new Thread(() -> new Server()).start();
-//
-//	            // Switch scene
-//	            Stage stage = (Stage) createButton.getScene().getWindow();
-//	            Scene scene = SceneLoader.sceneLoader("Scene2");
-//	            stage.setScene(scene);
 	        }
 	        return null;
 	    });
-
-	    // Show the dialog
 	    dialog.showAndWait();
+	}
+	
+	private void styleDialog(TextInputDialog dialog) {
+	    DialogPane pane = dialog.getDialogPane();
+	    pane.getStylesheets().add(getClass().getResource("guiConfigs/dialog.css").toExternalForm());
+	    pane.getStyleClass().add("dialog-pane");
 	}
 
 }

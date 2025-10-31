@@ -1,23 +1,26 @@
+package app.network;
 import java.io.*;
 import java.net.*;
+import app.*;
+
+import app.Scene2;
 
 public class Server {
     private ServerSocket serverSocket = null;
-    private int port = 8080;
-    private int clients = 1;
-    private int maxClients = 4;
+
     
     public Server() {
     	
     	try {
-			serverSocket = new ServerSocket(port);
+			serverSocket = new ServerSocket(UserConfigs.getServerPort());
 			System.out.println("Server started...");
 			
-			while (clients <= maxClients) {
+			while (UserConfigs.getClients() < UserConfigs.getSetClients()) {
 			Socket clientSocket = serverSocket.accept();
 		
-			int clientID = clients; 
-			clients++;
+			int clientID = UserConfigs.getClients();
+			Scene2.updateConnected(clientID);
+			UserConfigs.incrementClients();
 			
 			new Thread(() -> handleClient(clientSocket, clientID)).start();
 			
@@ -46,7 +49,7 @@ public class Server {
                 clientName = "Unknown";
             }
 			
-            System.out.printf("Client %d connected as [%s]\n", clientID, clientName);
+            System.out.printf("%s Has Connected...\n", clientName);
             
         	String guess = input.readLine();
 			if (guess != null) {
@@ -58,7 +61,8 @@ public class Server {
 			  
 			  input.close();
 	          clientSocket.close();
-	          System.out.printf("%s (Client %d) disconnected.\n", clientName, clientID);
+	          System.out.printf("%s Has Disconnected.\n", clientName);
+	          Scene2.updateDisconnected(clientID);
 			
 		} catch (IOException e) {
 			
@@ -67,13 +71,6 @@ public class Server {
 		
 	}
 	
-	public int getMaxClients() {
-		return this.maxClients;
-	}
-	
-	public void setMaxClients(int maxClients) {
-		this.maxClients = maxClients;
-	}
 	
 	public void idle(BufferedReader input) throws IOException {
 		while (input.readLine() != null) {
@@ -82,7 +79,7 @@ public class Server {
 	}
 	
 	 public static void main(String[] args) {
-	        new Server();
+		 new Server();
 	    }
 
 }

@@ -1,0 +1,62 @@
+
+.root {
+	-fx-font-family: "Nunito";
+	-fx-background-color: #1E1E2F;
+}
+
+.label {
+    -fx-padding: 30;
+    -fx-background-color: #1A1A2F;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button {
+-fx-pref-width: 200; 
+-fx-pref-height: 50;
+-fx-font-size: 20;
+-fx-border-width: 3.5;
+-fx-background-radius: 15;
+-fx-border-radius: 15px; 
+}
+
+/* The main title label */
+#mainTitle {
+    -fx-font-size: 55;
+    -fx-font-weight: bold;
+    -fx-padding: 20;
+}
+
+#createButton {
+	-fx-text-fill: #FFFFFF;
+	-fx-border-color: #FFFFFF;
+	-fx-background-color: #FFFFFF80;  
+}
+
+#joinButton {
+	-fx-text-fill: #FFFFFF;
+	-fx-border-color: #FFFFFF;
+	-fx-background-color: #FFFFFF80;  
+}
+
+#configButton {
+	 -fx-padding: 20;
+    -fx-background-color: #1A1A2F;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15px;
+    -fx-pref-width: -1;   
+    -fx-pref-height: -1; 
+}
+
+#createButton:hover {
+    -fx-background-color: #FFFFFFAA;
+}
+
+#configButton:hover {
+    -fx-background-color: #15152A; /* slightly darker on hover */
+}
+
+#joinButton:hover {
+    -fx-background-color: #FFFFFFAA;
+}

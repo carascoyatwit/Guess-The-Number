@@ -12,3 +12,5 @@ Thumbs.db
 # Java compile info.
 *.class
 
+#.so file thats lowkey useless and not really needed for what we are building, hope this doesnt break anything ... teehee.
+lib/libjfxwebkit.so

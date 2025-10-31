@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Scene1">
+   <center>
+      <VBox fx:id="centerVBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="centerVBox" BorderPane.alignment="TOP_CENTER">
+         <children>
+            <Label id="mainTitle" text="Guess The Number" />
+            <HBox id="centerHBox" fx:id="centerHBox" alignment="CENTER" prefHeight="70.0" prefWidth="200.0">
+               <children>
+                  <Button id="createButton" fx:id="createButton" mnemonicParsing="false" text="Create a Game" />
+                  <Button id="joinButton" fx:id="joinButton" mnemonicParsing="false" text="Join a Game" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+         </children></VBox>
+   </center>
+   <left>
+      <VBox prefHeight="200.0" prefWidth="100.0" styleClass="leftVBox" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" styleClass="rightVBox" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <VBox prefHeight="70.0" prefWidth="30.0" styleClass="bottomVBox" BorderPane.alignment="CENTER" />
+   </bottom>
+   <top>
+      <HBox fx:id="topHBox" alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="configButton" mnemonicParsing="false" />
+         </children>
+      </HBox>
+   </top>
+</BorderPane>

@@ -1,7 +1,5 @@
 package app.network;
 
-import java.util.Scanner;
-
 import app.*;
 import java.io.*;
 import java.net.*;
@@ -9,44 +7,26 @@ import java.net.*;
 
 public class Client{
 	
+	 private ObjectOutputStream output;
+	 private ObjectInputStream input;
+	
 	public Client() {
 		
-	    Scanner scan = new Scanner(System.in);
-	        
 	    try {
 	    
 	    Socket socket = new Socket(UserConfigs.getServerHost(), UserConfigs.getServerPort());
-	    PrintWriter send = new PrintWriter(socket.getOutputStream(), true);
-	    BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	    System.out.println("Connected to server at " + UserConfigs.getServerHost() + ":" + UserConfigs.getServerPort());
 	    
-	    
-	    send.println(UserConfigs.getClientName());
-	    System.out.println("Enter your guess: ");	
-	    String guess = scan.nextLine();
-	    send.println(guess);
-	   
-	   idle(); // this is kind of like a just hold on a second method for editing and testing purposes, whenever you reach a point where you want it to "stop" use this method
-	   
-	   scan.close();
-	   socket.close();
-	   send.close();
-	   input.close();
+	    output = new ObjectOutputStream(socket.getOutputStream());
+        input = new ObjectInputStream(socket.getInputStream());
+
+        output.writeObject(UserConfigs.getClientName());
+        output.flush();
 	   
 	    }catch (IOException e) {
 	    	System.out.println(e);
 	    }
 	    
-	}
-	
-	public void idle() {
-		 while (true) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-		 }
-
 	}
 	
 	 public static void main(String[] args) {

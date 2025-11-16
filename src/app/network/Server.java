@@ -1,85 +1,100 @@
 package app.network;
 import java.io.*;
 import java.net.*;
-import app.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import app.Scene2;
+import app.*;
 
 public class Server {
     private ServerSocket serverSocket = null;
-
+    private ArrayList<HandleClient> clients = new ArrayList<>();
+    private List<PlayerData> players = Collections.synchronizedList(new ArrayList<>());
+    private int max;
     
     public Server() {
     	
+    	this.max = UserConfigs.getSetClients();
+    	
     	try {
 			serverSocket = new ServerSocket(UserConfigs.getServerPort());
-			System.out.println("Server started...");
+			System.out.println("Server started on port " + UserConfigs.getServerPort());
 			
-			while (UserConfigs.getClients() < UserConfigs.getSetClients()) {
+			while (players.size() < max) {
+				
 			Socket clientSocket = serverSocket.accept();
-		
-			int clientID = UserConfigs.getClients();
-			Scene2.updateConnected(clientID);
-			UserConfigs.incrementClients();
-			
-			new Thread(() -> handleClient(clientSocket, clientID)).start();
-			
+			HandleClient client = new HandleClient(clientSocket, players.size());
+			clients.add(client);
+			new Thread(client).start();
 			}
 			
-			serverSocket.close();
+	System.out.println("Max clients connected. Server will no longer accept new connections.");
 			
 		} catch (IOException e) {
 			System.out.println(e);
 		}
-    
-    
+   
     
     }
+    
+
+private  class HandleClient implements Runnable{
 	
-	private void handleClient(Socket clientSocket, int clientID) {
+	private Socket socket;
+    private int clientID;
+    private ObjectOutputStream output;
+    private ObjectInputStream input;
+    private String name;
+
+	public HandleClient(Socket socket, int id) {
+		 this.socket = socket;
+         this.clientID = id;
+	}
+	
+	public void run() {
 		
 		try {
-			
-			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			//PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
-			//use above printwriter when you want to send stuff to client. 
-			
-			String clientName = input.readLine();
-			if (clientName == null || clientName.isEmpty()) {
-                clientName = "Unknown";
-            }
-			
-            System.out.printf("%s Has Connected...\n", clientName);
-            
-        	String guess = input.readLine();
-			if (guess != null) {
-				System.out.printf("[%s] guessed: %s\n", clientName, guess);
-				
-			}
-		
-			  idle(input); // this basically just keeps connection open until the client disconnects different form idle on client side.
-			  
-			  input.close();
-	          clientSocket.close();
-	          System.out.printf("%s Has Disconnected.\n", clientName);
-	          Scene2.updateDisconnected(clientID);
-			
-		} catch (IOException e) {
-			
-			System.out.println(e);
-		}
-		
-	}
-	
-	
-	public void idle(BufferedReader input) throws IOException {
-		while (input.readLine() != null) {
+		output = new ObjectOutputStream(socket.getOutputStream());
+        input = new ObjectInputStream(socket.getInputStream());
+
+        // Receive player name from client
+        name = (String) input.readObject();
+        if (name == null || name.isEmpty()) {
+            name = "Unknown";
         }
-	  
+        
+        boolean isHost = (clientID == 0);
+        PlayerData player = new PlayerData(name, isHost);
+        players.add(player);
+        
+        System.out.printf("%s has connected (id=%d)\n", name, clientID);
+        UserConfigs.incrementClients();
+        Scene2.updateConnected(clientID);
+        
+		}catch (IOException | ClassNotFoundException e) {
+			
+			System.out.printf("Client %d disconnected unexpectedly.\n", clientID);
+			 Scene2.updateDisconnected(clientID);
+             players.removeIf(p -> p.getName().equals(name));
+             UserConfigs.decrementClients();
+            
+		}finally {
+			try {
+                if (input != null) input.close();
+                if (output != null) output.close();
+                if (socket != null) socket.close();
+            } catch (IOException ignored) { }
+		}
 	}
+}
+    	
+
+	
 	
 	 public static void main(String[] args) {
 		 new Server();
 	    }
 
 }
+    

@@ -72,9 +72,20 @@ private  class HandleClient implements Runnable{
         UserConfigs.incrementClients();
         Scene2.updateConnected(clientID);
         
+        while (true) {
+            Object obj = input.readObject();
+            if (obj instanceof String) {
+                String msg = (String) obj;
+                if (msg.equals("start-game")) {
+                    System.out.println("Host started game!");
+                    broadcastStart();
+                }
+            }
+        }
+        
 		}catch (IOException | ClassNotFoundException e) {
 			
-			System.out.printf("Client %d disconnected unexpectedly.\n", clientID);
+			System.out.printf("Client %d has disconnected.\n", clientID);
 			 Scene2.updateDisconnected(clientID);
              players.removeIf(p -> p.getName().equals(name));
              UserConfigs.decrementClients();
@@ -89,6 +100,17 @@ private  class HandleClient implements Runnable{
 	}
 }
     	
+private void broadcastStart() {
+    for (HandleClient c : clients) {
+        try {
+            c.output.writeObject("start-game");
+            c.output.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
 
 	
 	

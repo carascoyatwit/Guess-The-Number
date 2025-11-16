@@ -16,17 +16,28 @@ public class Scene2 {
 	@FXML 
 	private HBox centerHBox;
 	
+	@FXML
+	private Button startButton;
+	
 	public static ArrayList<Label> list = new ArrayList<>();
 
 	public void initialize() {
 		new Thread(() -> new Client()).start();
 		
+		centerVBox.setSpacing(60);
+		
 		for(int i = 0; i < UserConfigs.getSetClients(); i++) {
 			Label lbl = new Label();
 			list.add(lbl);
 			centerHBox.getChildren().add(lbl);
+			startButton.setDisable(true);
+			if(UserConfigs.getClients() == UserConfigs.getSetClients()) {
+				startButton.setDisable(false);
+			}
 		}
 		centerHBox.setSpacing(50);
+		
+		
 	}
 	
 	public static void updateConnected(int index) {
@@ -35,5 +46,6 @@ public class Scene2 {
 	public static void updateDisconnected(int index) {
 		list.get(index).setStyle("-fx-text-fill: #FF0000; -fx-border-color: #FF0000; -fx-background-color: #FF000080;");
 	}
+
 
 }

@@ -3,6 +3,7 @@ package app.network;
 import app.*;
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 
 public class Client{
@@ -22,12 +23,16 @@ public class Client{
 
         output.writeObject(UserConfigs.getClientName());
         output.flush();
+        
+        
 	   
 	    }catch (IOException e) {
 	    	System.out.println(e);
 	    }
 	    
 	}
+	
+	
 	
 	 public static void main(String[] args) {
 	        new Client();

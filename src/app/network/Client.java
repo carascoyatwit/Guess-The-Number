@@ -2,6 +2,9 @@ package app.network;
 
 import app.AppState;
 import app.UserConfigs;
+import app.packets.MaxPlayers;
+import app.packets.PlayerConnected;
+import app.packets.PlayerDisconnect;
 import javafx.application.Platform;
 
 import java.io.*;
@@ -29,40 +32,46 @@ public class Client implements Runnable {
             // listen loop
             Object obj;
             while ((obj = input.readObject()) != null) {
-                if (!(obj instanceof String)) continue;
-                String msg = (String) obj;
-
-                if (msg.startsWith("maxplayers|")) {
-                    int maxPlayers = Integer.parseInt(msg.split("\\|")[1]);
+                if (obj instanceof MaxPlayers) {
+                MaxPlayers msg = (MaxPlayers) obj;
+                    int maxPlayers = msg.getMax();
                     Platform.runLater(() -> {
                         if (AppState.scene2Controller != null) {
                             AppState.scene2Controller.setupLabels(maxPlayers);
                         }
                     });
                 
-                } else if (msg.startsWith("connected|")) {
-                    String[] parts = msg.split("\\|", 3);
-                    if (parts.length >= 3) {
-                        int id = Integer.parseInt(parts[1]);
-                        String name = parts[2];
-                        javafx.application.Platform.runLater(() -> {
+                } else if (obj instanceof PlayerConnected) {
+                    PlayerConnected msg = (PlayerConnected) obj;
+                    int id = msg.getClientID();
+                    String name = msg.getName();
+                        Platform.runLater(() -> {
                             if (AppState.scene2Controller != null) {
                                 AppState.scene2Controller.updateConnected(id, name);
                             }
                         });
-                    }
-                } else if (msg.startsWith("disconnected|")) {
-                    String[] parts = msg.split("\\|", 2);
-                    if (parts.length >= 2) {
-                        int id = Integer.parseInt(parts[1]);
+                
+                } else if (obj instanceof PlayerDisconnect) {
+                		PlayerDisconnect msg = (PlayerDisconnect) obj;
+                        int id = msg.getClientID();
                         javafx.application.Platform.runLater(() -> {
                             if (AppState.scene2Controller != null) {
                                 AppState.scene2Controller.updateDisconnected(id);
                             }
                         });
-                    }
-                } else {
+                    
+                } else if(obj instanceof String) {
                     // handle other messages
+                	String msg = (String) obj;
+                	if(msg.equals("start-game")) {
+                		Platform.runLater(() -> {
+                            System.out.println("Game started!");
+                            // AppState.gameStarted = true; // Update global state
+                            // AppState.scene2Controller.displayGameStarted();
+                        });
+                	}
+                } else {
+                	System.out.println("Client Has recieved an unknown object." + obj.getClass().getName());
                 }
             }
 
@@ -75,4 +84,5 @@ public class Client implements Runnable {
         new Thread(new Client()).start();
     }
 }
+
 

@@ -4,9 +4,8 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import app.*;
-import app.packets.PlayerData;
+import app.packets.*;
 
 public class Server {
     private ServerSocket serverSocket = null;
@@ -70,16 +69,15 @@ private  class HandleClient implements Runnable{
         System.out.printf("%s has connected (id = %d)\n", name, clientID);
         UserConfigs.incrementClients();
         
-        output.writeObject("maxplayers|" + max);
+        output.writeObject(new MaxPlayers(max));
         output.flush();
         
         for (int i = 0; i < players.size(); i++) {
             PlayerData p = players.get(i);
-            output.writeObject("connected|" + i + "|" + p.getName());
+            output.writeObject(new PlayerConnected(i, p.getName()));
         }
         output.flush();
-        
-        broadcastConnected(clientID, name);
+        broadcastToAll(new PlayerConnected(clientID, name));
         
         while (true) {
             Object obj = input.readObject();
@@ -103,7 +101,7 @@ private  class HandleClient implements Runnable{
 			System.out.printf("Client %d has disconnected.\n", clientID);
              players.removeIf(p -> p.getName().equals(name));
              UserConfigs.decrementClients();
-             broadcastDisconnected(clientID);
+             broadcastToAll(new PlayerDisconnect(clientID));
              
              
 		}finally {
@@ -116,11 +114,11 @@ private  class HandleClient implements Runnable{
 	}
 }
     	
-private void broadcastToAll(String msg) {
+private void broadcastToAll(Message message) {
     for (HandleClient c : clients) {
         try {
             if (c.output != null) {
-                c.output.writeObject(msg);
+                c.output.writeObject(message);
                 c.output.flush();
             }
         } catch (IOException e) {
@@ -129,13 +127,13 @@ private void broadcastToAll(String msg) {
     }
 }
 
-private void broadcastConnected(int id, String name) {
-    broadcastToAll("connected|" + id + "|" + name);
-}
-
-private void broadcastDisconnected(int id) {
-    broadcastToAll("disconnected|" + id);
-}
+//private void broadcastConnected(int id, String name) {
+//    broadcastToAll("connected|" + id + "|" + name);
+//}
+//
+//private void broadcastDisconnected(int id) {
+//    broadcastToAll("disconnected|" + id);
+//}
 	
 	 public static void main(String[] args) {
 		 new Server();

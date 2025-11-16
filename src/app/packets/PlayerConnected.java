@@ -25,7 +25,7 @@ public class PlayerConnected extends Message implements Serializable{
 	//cuz why not for debugging purposes teehee.
 	@Override
     public String toString() {
-        return "PlayerConnectedMessage [ID=" + clientID + ", Name=" + name + "]";
+        return "PlayerConnected [ID=" + clientID + ", Name=" + name + "]";
     }
 
 }

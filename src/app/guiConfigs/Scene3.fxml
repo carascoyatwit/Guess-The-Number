@@ -24,10 +24,10 @@
          <children>
             <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label id="waitingLabel" text="Waiting for host to start game..." />
+                  <Label id="waitingLabel" text="Waiting for host to start..." />
                </children>
             </HBox>
-            <HBox fx:id="centerHBox" prefHeight="100.0" prefWidth="200.0" />
+            <HBox fx:id="centerHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
             <HBox fx:id="bottomHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" />

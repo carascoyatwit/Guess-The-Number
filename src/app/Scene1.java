@@ -67,7 +67,7 @@ public class Scene1 {
 	    Stage stage = (Stage) createButton.getScene().getWindow();
 	    SceneLoader.LoadedScene<Scene2> loaded = SceneLoader.load("Scene2");
 
-	    AppState.scene2Controller = loaded.controller;
+	    AppState.waitingRoomController = loaded.controller;
 
 	    stage.setScene(loaded.scene);
 		
@@ -81,9 +81,9 @@ private void joinGame() {
 	}
 
     Stage stage = (Stage) createButton.getScene().getWindow();
-    SceneLoader.LoadedScene<Scene2> loaded = SceneLoader.load("Scene2");
+    SceneLoader.LoadedScene<Scene3> loaded = SceneLoader.load("Scene3");
 
-    AppState.scene2Controller = loaded.controller;
+    AppState.waitingRoomController = loaded.controller;
 
     stage.setScene(loaded.scene);
 	}

@@ -62,12 +62,14 @@ public class Scene1 {
 	
 	private void createGame() {
 	
-        new Thread(() -> new Server()).start();
-        
-        Stage stage = (Stage) createButton.getScene().getWindow();
-        Scene scene = SceneLoader.sceneLoader("Scene2");
-        stage.setScene(scene);
+	    new Thread(() -> new Server()).start();
 
+	    Stage stage = (Stage) createButton.getScene().getWindow();
+	    SceneLoader.LoadedScene<Scene2> loaded = SceneLoader.load("Scene2");
+
+	    AppState.scene2Controller = loaded.controller;
+
+	    stage.setScene(loaded.scene);
 		
 	}
 	
@@ -79,9 +81,11 @@ private void joinGame() {
 	}
 
     Stage stage = (Stage) createButton.getScene().getWindow();
-    Scene scene = SceneLoader.sceneLoader("Scene2");
-    stage.setScene(scene);
-	
+    SceneLoader.LoadedScene<Scene2> loaded = SceneLoader.load("Scene2");
+
+    AppState.scene2Controller = loaded.controller;
+
+    stage.setScene(loaded.scene);
 	}
 	
 	public static Region emptyNode(Pane pane, int index, double size, boolean isVertical) {

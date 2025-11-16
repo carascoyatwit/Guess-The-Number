@@ -19,28 +19,33 @@ public class Scene2 {
 	@FXML
 	private Button startButton;
 	
-	public static ArrayList<Label> list = new ArrayList<>();
+	private ArrayList<Label> labels = new ArrayList<>();
 
 	public void initialize() {
-		new Thread(() -> new Client()).start();
-		
 		centerVBox.setSpacing(60);
-		
-		for(int i = 0; i < UserConfigs.getSetClients(); i++) {
-			Label lbl = new Label();
-			list.add(lbl);
-			centerHBox.getChildren().add(lbl);
-		}
-		centerHBox.setSpacing(50);
-		
-		
+
+        for (int i = 0; i < UserConfigs.getSetClients(); i++) {
+            Label lbl = new Label("...");
+            labels.add(lbl);
+            centerHBox.getChildren().add(lbl);
+        }
+
+        centerHBox.setSpacing(50);
+        
+        new Thread(new app.network.Client()).start();
 	}
 	
-	public static void updateConnected(int index) {
-		list.get(index).setStyle("-fx-text-fill: #50C878; -fx-border-color: #50C878; -fx-background-color: #50C87880;");
+	public void updateConnected(int index, String name) {
+		if (index < 0 || index >= labels.size()) return;
+        Label lbl = labels.get(index);
+        lbl.setText(name);
+        lbl.setStyle("-fx-text-fill: #50C878; -fx-border-color: #50C878; -fx-background-color: #50C87880;");
 	}
-	public static void updateDisconnected(int index) {
-		list.get(index).setStyle("-fx-text-fill: #FF0000; -fx-border-color: #FF0000; -fx-background-color: #FF000080;");
+	public void updateDisconnected(int index) {
+		if (index < 0 || index >= labels.size()) return;
+        Label lbl = labels.get(index);
+        lbl.setText("Disconnected");
+        lbl.setStyle("-fx-text-fill: #FF0000; -fx-border-color: #FF0000; -fx-background-color: #FF000080;");
 	}
 
 

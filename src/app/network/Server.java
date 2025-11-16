@@ -68,7 +68,15 @@ private  class HandleClient implements Runnable{
         
         System.out.printf("%s has connected (id=%d)\n", name, clientID);
         UserConfigs.incrementClients();
-        Scene2.updateConnected(clientID);
+        
+     // after creating the new client's output stream
+        for (int i = 0; i < players.size(); i++) {
+            PlayerData p = players.get(i);
+            output.writeObject("connected|" + i + "|" + p.getName());
+        }
+        output.flush();
+        
+        broadcastConnected(clientID, name);
         
         while (true) {
             Object obj = input.readObject();
@@ -76,7 +84,6 @@ private  class HandleClient implements Runnable{
                 String msg = (String) obj;
                 if (msg.equals("start-game")) {
                     System.out.println("Host started game!");
-                    broadcastStart();
                 }
             }
         }
@@ -84,10 +91,9 @@ private  class HandleClient implements Runnable{
 		}catch (IOException | ClassNotFoundException e) {
 			
 			System.out.printf("Client %d has disconnected.\n", clientID);
-			 Scene2.updateDisconnected(clientID);
              players.removeIf(p -> p.getName().equals(name));
              UserConfigs.decrementClients();
-            
+             broadcastDisconnected(clientID);
 		}finally {
 			try {
                 if (input != null) input.close();
@@ -98,19 +104,26 @@ private  class HandleClient implements Runnable{
 	}
 }
     	
-private void broadcastStart() {
+private void broadcastToAll(String msg) {
     for (HandleClient c : clients) {
         try {
-            c.output.writeObject("start-game");
-            c.output.flush();
+            if (c.output != null) {
+                c.output.writeObject(msg);
+                c.output.flush();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
 
+private void broadcastConnected(int id, String name) {
+    broadcastToAll("connected|" + id + "|" + name);
+}
 
-	
+private void broadcastDisconnected(int id) {
+    broadcastToAll("disconnected|" + id);
+}
 	
 	 public static void main(String[] args) {
 		 new Server();

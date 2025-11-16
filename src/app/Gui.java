@@ -18,7 +18,7 @@ public class Gui extends Application{
 		 	Font.loadFont(getClass().getResource("/app/fonts/Nunito-Regular.ttf").toExternalForm(), 12);
 		 	
 		 	
-		    SceneLoader.LoadedScene<?> loaded = SceneLoader.load("Scene1");  // returns both Scene and Controller
+		    SceneLoader.LoadedScene<?> loaded = SceneLoader.load("Scene1");
 	        Scene scene1 = loaded.scene;
 	        
 	        

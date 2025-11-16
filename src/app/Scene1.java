@@ -174,15 +174,15 @@ private void joinGame() {
 
 	    
 	    TextField nameField = new TextField(UserConfigs.getClientName());
-	    //nameField.setPromptText(UserConfigs.getClientName());
+	    
 
 	    Spinner<Integer> setPlayersSpinner = new Spinner<>(2, 10, UserConfigs.getSetClients());
 
 	    TextField hostField = new TextField(UserConfigs.getServerHost());
-	    //hostField.setPromptText(UserConfigs.getServerHost());
+	   
 	    
 	    TextField portField = new TextField(String.valueOf(UserConfigs.getServerPort()));
-	    //portField.setPromptText(String.valueOf(UserConfigs.getServerPort()));
+	    
 
 	    VBox content = new VBox(10);
 	    content.getChildren().addAll(

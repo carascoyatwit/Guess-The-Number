@@ -25,13 +25,11 @@ public class Scene2 {
 		centerVBox.setSpacing(60);
 		 centerHBox.setSpacing(50);
         
-        new Thread(new app.network.Client()).start();
+		 new Thread(new Client()).start();
 	}
 	
 	   public void setupLabels(int maxPlayers) {
-	        labels.clear();
-	        centerHBox.getChildren().clear();
-
+		   
 	        for (int i = 0; i < maxPlayers; i++) {
 	            Label lbl = new Label("...");
 	            labels.add(lbl);

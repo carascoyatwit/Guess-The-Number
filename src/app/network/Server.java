@@ -66,7 +66,7 @@ private  class HandleClient implements Runnable{
         PlayerData player = new PlayerData(name);
         players.add(player);
         
-        System.out.printf("%s has connected (id=%d)\n", name, clientID);
+        System.out.printf("%s has connected (id = %d)\n", name, clientID);
         UserConfigs.incrementClients();
         
         output.writeObject("maxplayers|" + max);
@@ -82,26 +82,35 @@ private  class HandleClient implements Runnable{
         
         while (true) {
             Object obj = input.readObject();
+            
             if (obj instanceof String) {
                 String msg = (String) obj;
                 if (msg.equals("start-game")) {
+                	//logic to actually start the game
                     System.out.println("Host started game!");
                 }
+                
+                //can handle any other messages that is a string
+                
             }
         }
         
 		}catch (IOException | ClassNotFoundException e) {
 			
+			//this is where you will go if the connection breaks.
+			
 			System.out.printf("Client %d has disconnected.\n", clientID);
              players.removeIf(p -> p.getName().equals(name));
              UserConfigs.decrementClients();
              broadcastDisconnected(clientID);
+             
+             
 		}finally {
 			try {
                 if (input != null) input.close();
-                if (output != null) output.close();
+                if (output != null) output.close(); // this is cloasing the streams.
                 if (socket != null) socket.close();
-            } catch (IOException ignored) { }
+            } catch (IOException ignored) { } // who cares really.
 		}
 	}
 }

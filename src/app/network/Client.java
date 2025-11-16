@@ -2,6 +2,8 @@ package app.network;
 
 import app.AppState;
 import app.UserConfigs;
+import javafx.application.Platform;
+
 import java.io.*;
 import java.net.*;
 
@@ -30,8 +32,15 @@ public class Client implements Runnable {
                 if (!(obj instanceof String)) continue;
                 String msg = (String) obj;
 
-                // split into at most 3 parts (so name can contain '|')
-                if (msg.startsWith("connected|")) {
+                if (msg.startsWith("maxplayers|")) {
+                    int maxPlayers = Integer.parseInt(msg.split("\\|")[1]);
+                    Platform.runLater(() -> {
+                        if (AppState.scene2Controller != null) {
+                            AppState.scene2Controller.setupLabels(maxPlayers);
+                        }
+                    });
+                
+                } else if (msg.startsWith("connected|")) {
                     String[] parts = msg.split("\\|", 3);
                     if (parts.length >= 3) {
                         int id = Integer.parseInt(parts[1]);

@@ -57,7 +57,7 @@ private  class HandleClient implements Runnable{
 		try {
 		output = new ObjectOutputStream(socket.getOutputStream());
         input = new ObjectInputStream(socket.getInputStream());
-
+  
         // Receive player name from client
         name = (String) input.readObject();
         if (name == null || name.isEmpty()) {
@@ -69,7 +69,9 @@ private  class HandleClient implements Runnable{
         System.out.printf("%s has connected (id=%d)\n", name, clientID);
         UserConfigs.incrementClients();
         
-     // after creating the new client's output stream
+        output.writeObject("maxplayers|" + max);
+        output.flush();
+        
         for (int i = 0; i < players.size(); i++) {
             PlayerData p = players.get(i);
             output.writeObject("connected|" + i + "|" + p.getName());

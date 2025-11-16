@@ -23,17 +23,24 @@ public class Scene2 {
 
 	public void initialize() {
 		centerVBox.setSpacing(60);
-
-        for (int i = 0; i < UserConfigs.getSetClients(); i++) {
-            Label lbl = new Label("...");
-            labels.add(lbl);
-            centerHBox.getChildren().add(lbl);
-        }
-
-        centerHBox.setSpacing(50);
+		 centerHBox.setSpacing(50);
         
         new Thread(new app.network.Client()).start();
 	}
+	
+	   public void setupLabels(int maxPlayers) {
+	        labels.clear();
+	        centerHBox.getChildren().clear();
+
+	        for (int i = 0; i < maxPlayers; i++) {
+	            Label lbl = new Label("...");
+	            labels.add(lbl);
+	            centerHBox.getChildren().add(lbl);
+	        }
+	        
+	        centerHBox.setSpacing(50);
+	    }
+
 	
 	public void updateConnected(int index, String name) {
 		if (index < 0 || index >= labels.size()) return;

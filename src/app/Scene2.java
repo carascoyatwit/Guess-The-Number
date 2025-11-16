@@ -30,10 +30,6 @@ public class Scene2 {
 			Label lbl = new Label();
 			list.add(lbl);
 			centerHBox.getChildren().add(lbl);
-			startButton.setDisable(true);
-			if(UserConfigs.getClients() == UserConfigs.getSetClients()) {
-				startButton.setDisable(false);
-			}
 		}
 		centerHBox.setSpacing(50);
 		

@@ -63,9 +63,7 @@ private  class HandleClient implements Runnable{
         if (name == null || name.isEmpty()) {
             name = "Unknown";
         }
-        
-        boolean isHost = (clientID == 0);
-        PlayerData player = new PlayerData(name, isHost);
+        PlayerData player = new PlayerData(name);
         players.add(player);
         
         System.out.printf("%s has connected (id=%d)\n", name, clientID);

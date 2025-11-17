@@ -1,0 +1,13 @@
+.root {
+    -fx-font-family: "Nunito";
+    -fx-background-color: #3A3A5A; /* A different background color cuz why not*/
+}
+
+.label {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #E0E0E0;
+    -fx-padding: 15px;
+    -fx-background-color: #2A2A4A;
+    -fx-background-radius: 10px;
+}

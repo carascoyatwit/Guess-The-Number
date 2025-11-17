@@ -2,16 +2,19 @@ package app;
 
 import java.util.ArrayList;
 
+import app.misc.SceneLoader;
 import app.network.Client;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
 public class Scene3 {
 
-	@FXML 
-	private VBox centerVBox;
+	@FXML
+	public VBox centerVBox;
 	
     @FXML 
     private HBox centerHBox;
@@ -26,10 +29,18 @@ public class Scene3 {
         centerHBox.setSpacing(50);
         
         new Thread(new Client()).start();
+        
+        cancelButton.setOnAction(e -> leaveGame());
 
     }
     
-    public void setupLabels(int maxPlayers) {
+    private void leaveGame() {
+    	 Stage stage = (Stage) cancelButton.getScene().getWindow();
+    	    SceneLoader.LoadedScene<Scene1> loaded = SceneLoader.load("Scene1");
+    	    stage.setScene(loaded.scene);
+	}
+
+	public void setupLabels(int maxPlayers) {
         labels.clear();
         centerHBox.getChildren().clear();
 

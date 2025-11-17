@@ -10,7 +10,7 @@ import javafx.scene.layout.*;
 public class Scene2 {
 	
 	@FXML
-	private VBox centerVBox;
+	public VBox centerVBox;
 	
 	@FXML 
 	private HBox centerHBox;

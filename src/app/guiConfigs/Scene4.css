@@ -6,8 +6,21 @@
 .label {
     -fx-font-size: 30px;
     -fx-font-weight: bold;
+    -fx-padding: 20;
     -fx-text-fill: #E0E0E0;
     -fx-padding: 15px;
     -fx-background-color: #2A2A4A;
     -fx-background-radius: 10px;
+}
+
+#guessInput {
+    -fx-background-color: #3A3A6A;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 18px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #5A5AC0;
+    -fx-border-width: 1.5px;
+    -fx-padding: 8px 12px;
+    -fx-prompt-text-fill: #B0B0B0; /* Placeholder text color */
 }

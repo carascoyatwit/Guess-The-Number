@@ -13,6 +13,10 @@ public class GameStatus extends Message implements Serializable {
 		this.gameStarted = gameStarted;
 	}
 	
+	public boolean isGameStarted() {
+		return gameStarted;
+	}
+	
 	
 	@Override
     public String toString() {

@@ -4,8 +4,11 @@ import app.AppState;
 import app.UserConfigs;
 import app.Scene2; 
 import app.Scene3; 
+import app.Scene4;
+import app.misc.SceneLoader;
 import app.packets.*;
 import javafx.application.Platform;
+import javafx.stage.*;
 
 import java.io.*;
 import java.net.*;
@@ -14,6 +17,7 @@ public class Client implements Runnable {
 
     private ObjectOutputStream output;
     private ObjectInputStream input;
+    public static Client currentClientInstance = null; // this is used to identify a specific client instance.
 
     public Client() { }
 
@@ -22,8 +26,11 @@ public class Client implements Runnable {
         try (Socket socket = new Socket(UserConfigs.getServerHost(), UserConfigs.getServerPort())) {
           System.out.println("Connected to server at " + UserConfigs.getServerHost() + ":" + UserConfigs.getServerPort());
 
+          Client.currentClientInstance = this;
+          
             output = new ObjectOutputStream(socket.getOutputStream());
            input = new ObjectInputStream(socket.getInputStream());
+           
 
             // send our name to server
             output.writeObject(UserConfigs.getClientName());
@@ -37,6 +44,7 @@ public class Client implements Runnable {
                 final Object finalReceivedObject = receivedRawObject; 
                 
                 Platform.runLater(() -> {
+            	
                     if (AppState.waitingRoomController == null) {
                         System.err.println("Look into this, it is null");
                         return;
@@ -60,6 +68,28 @@ public class Client implements Runnable {
         } catch (Exception e) {
             System.out.println(e);
             
+        }finally {
+        	if (Client.currentClientInstance == this) {
+                Client.currentClientInstance = null;
+            }
+        	try {
+                if (output != null) output.close();
+                if (input != null) input.close();
+            } catch (IOException ignored) {}
+        }
+    }
+    
+    public void sendToServer(Serializable packet) {
+    	if (output != null) {
+    		try {
+                output.writeObject(packet);
+                output.flush();
+                System.out.println("sent: " + packet.getClass().getSimpleName());
+            } catch (IOException e) {
+                System.err.println("failed: " + e.getMessage());
+            } 
+    	} else {
+            System.err.println("error.");
         }
     }
 

@@ -3,7 +3,6 @@ package app;
 import java.util.ArrayList;
 
 import app.network.Client;
-import app.network.Server;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -26,8 +25,19 @@ public class Scene2 {
 		 centerHBox.setSpacing(50);
         
 		 new Thread(new Client()).start();
+		 
+		 startButton.setOnAction(e -> startGame());
 	}
 	
+	   private void startGame() {
+		   if (Client.currentClientInstance != null) {
+	            
+	            Client.currentClientInstance.sendToServer("start-game");
+	        } else {
+	            System.err.println("Could not find client host instance?");
+	        }
+	}
+
 	   public void setupLabels(int maxPlayers) {
 		   
 	        for (int i = 0; i < maxPlayers; i++) {

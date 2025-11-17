@@ -85,7 +85,7 @@ private  class HandleClient implements Runnable{
             if (obj instanceof String) {
                 String msg = (String) obj;
                 if (msg.equals("start-game")) {
-                	//logic to actually start the game
+                	broadcastToAll(new GameStatus(true));
                     System.out.println("Host started game!");
                 }
                 
@@ -126,14 +126,6 @@ private void broadcastToAll(Message message) {
         }
     }
 }
-
-//private void broadcastConnected(int id, String name) {
-//    broadcastToAll("connected|" + id + "|" + name);
-//}
-//
-//private void broadcastDisconnected(int id) {
-//    broadcastToAll("disconnected|" + id);
-//}
 	
 	 public static void main(String[] args) {
 		 new Server();

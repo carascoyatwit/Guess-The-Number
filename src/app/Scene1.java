@@ -62,12 +62,14 @@ public class Scene1 {
 	
 	private void createGame() {
 	
-        new Thread(() -> new Server()).start();
-        
-        Stage stage = (Stage) createButton.getScene().getWindow();
-        Scene scene = SceneLoader.sceneLoader("Scene2");
-        stage.setScene(scene);
+	    new Thread(() -> new Server()).start();
 
+	    Stage stage = (Stage) createButton.getScene().getWindow();
+	    SceneLoader.LoadedScene<Scene2> loaded = SceneLoader.load("Scene2");
+
+	    AppState.waitingRoomController = loaded.controller;
+
+	    stage.setScene(loaded.scene);
 		
 	}
 	
@@ -79,9 +81,11 @@ private void joinGame() {
 	}
 
     Stage stage = (Stage) createButton.getScene().getWindow();
-    Scene scene = SceneLoader.sceneLoader("Scene2");
-    stage.setScene(scene);
-	
+    SceneLoader.LoadedScene<Scene3> loaded = SceneLoader.load("Scene3");
+
+    AppState.waitingRoomController = loaded.controller;
+
+    stage.setScene(loaded.scene);
 	}
 	
 	public static Region emptyNode(Pane pane, int index, double size, boolean isVertical) {
@@ -169,16 +173,16 @@ private void joinGame() {
 	    pane.getStyleClass().add("dialog-pane");
 
 	    
-	    TextField nameField = new TextField();
-	    nameField.setPromptText(UserConfigs.getClientName());
+	    TextField nameField = new TextField(UserConfigs.getClientName());
+	    
 
 	    Spinner<Integer> setPlayersSpinner = new Spinner<>(2, 10, UserConfigs.getSetClients());
 
-	    TextField hostField = new TextField();
-	    hostField.setPromptText(UserConfigs.getServerHost());
+	    TextField hostField = new TextField(UserConfigs.getServerHost());
+	   
 	    
-	    TextField portField = new TextField();
-	    portField.setPromptText(String.valueOf(UserConfigs.getServerPort()));
+	    TextField portField = new TextField(String.valueOf(UserConfigs.getServerPort()));
+	    
 
 	    VBox content = new VBox(10);
 	    content.getChildren().addAll(

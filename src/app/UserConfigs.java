@@ -2,8 +2,8 @@ package app;
 
 public class UserConfigs {
 
-    private static String clientName = "Player";
-    private static int setClients;
+    private static String clientName = "Unknown";
+    private static int setClients = 4;
     private static int clients = 0;
     private static String serverHost = "localhost";
     private static int serverPort = 8080;

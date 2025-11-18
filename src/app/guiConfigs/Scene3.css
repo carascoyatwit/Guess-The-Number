@@ -1,0 +1,41 @@
+.root {
+    -fx-font-family: "Nunito";
+    -fx-background-color: #1E1E2F;
+}
+
+#waitingLabel {
+    -fx-font-size: 55;
+    -fx-font-weight: bold;
+    -fx-padding: 20;
+    -fx-background-color: #1A1A2F;
+    -fx-background-radius: 15;
+    -fx-border-color: #1A1A2F;
+    -fx-border-radius: 15px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.label {
+    -fx-padding: 30px 40px 30px 40px;
+    -fx-background-color: #1A1A2F;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-text-fill: #FF0000; /* Default player label color */
+    -fx-border-color: #FF0000;
+    -fx-background-color: #FF000080;
+}
+
+.button:hover {
+    -fx-background-color: #FFFFFFAA;
+}
+
+.button {
+    -fx-pref-width: 200px;
+    -fx-pref-height: 50px;
+    -fx-font-size: 20px;
+    -fx-border-width: 3.5;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #FFFFFF;
+    -fx-background-color: #FFFFFF80;
+}

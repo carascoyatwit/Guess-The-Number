@@ -52,7 +52,17 @@ public class Scene4 {
 
 	        for (PlayerData player : connectedPlayers) {
 	            Label lbl = new Label(player.getName());
-	            lbl.setStyle("-fx-text-fill: #E0E0E0; -fx-font-size: 20px;"); // Default style for names
+	            lbl.setStyle(
+	                    "-fx-text-fill: #ADD8E6;" + 
+	                    "-fx-font-size: 20px;" +
+	                    "-fx-font-weight: bold;" + 
+	                    "-fx-padding: 30px 40px;" + 
+	                    "-fx-background-color: #ADD8E680;" + 
+	                    "-fx-background-radius: 15px;" + 
+	                    "-fx-border-color: #ADD8E6;" + 
+	                    "-fx-border-radius: 15px;" +
+	                    "-fx-font-family: \"Nunito\";"
+	                );
 	            playerLabels.add(lbl);
 	            centerHBox.getChildren().add(lbl);
 	        }

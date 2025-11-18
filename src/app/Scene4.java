@@ -24,7 +24,7 @@ public class Scene4 {
 	private ArrayList<Label> playerLabels = new ArrayList<>();
 	
 	public void initialize() {
-		centerVBox.setSpacing(30);
+		centerVBox.setSpacing(90);
 		centerHBox.setSpacing(50);
 		
 		 guessInput.textProperty().addListener((observable, oldValue, newValue) -> {

@@ -14,15 +14,18 @@
     -fx-border-radius: 15px;
 }
 
-#answerlabel { 
+#answerlabel {
     -fx-font-size: 30px;
     -fx-font-weight: bold;
-    -fx-padding: 20px;
+    -fx-padding: 40px; 
     -fx-text-fill: #E0E0E0;
     -fx-background-color: #2A2A4A;
-    -fx-background-radius: 15px;
-    -fx-border-color: #2A2A4A; 
-    -fx-border-radius: 15px;
+    -fx-background-radius: 15px; 
+    -fx-border-color: #2A2A4A;
+    -fx-border-radius: 15px; 
+    -fx-min-width: 120px; 
+    -fx-min-height: 120px; 
+    -fx-alignment: CENTER; 
 }
 
 #guessInput {

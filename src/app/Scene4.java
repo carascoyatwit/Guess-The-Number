@@ -47,23 +47,19 @@ public class Scene4 {
 		 
 	}
 	
-	private void sendGuess(String guess) {
-	    if (Client.currentClientInstance != null) {
-	        // You'll need to know *your* clientID to send this packet.
-	        // This usually needs to be stored in UserConfigs or AppState after connection.
-	        // For now, let's assume clientID is available or passed.
-	        // This is a simplification; in a real game, the Client class would likely know its own ID.
-	        // For example, the server could send a PlayerConnected packet for YOUR player first,
-	        // and you store that ID in UserConfigs.
-	        int myClientID = -1; // Placeholder: Get actual client ID
-	        // For this example, let's just send the guess as a string for simplicity,
-	        // but a PlayerGuessed packet is better for structured data.
-	        Client.currentClientInstance.sendToServer(new PlayerGuessed(myClientID, guess));
-	    } else {
-	        System.err.println("Cannot send guess: Client not connected.");
-	    }
-	}
-	
+    private void sendGuess(String guess) {
+        if (Client.currentClientInstance != null) {
+            int myClientID = UserConfigs.getMyClientID(); // Get the client's stored ID
+            if (myClientID != -1) { // Ensure the ID has been set
+                Client.currentClientInstance.sendToServer(new PlayerGuessed(myClientID, guess));
+            } else {
+                System.err.println("Cannot send guess: Client ID not yet assigned.");
+            }
+        } else {
+            System.err.println("Cannot send guess: Client not connected.");
+        }
+    }
+    
 	 public void setupPlayerLabels(ArrayList<PlayerData> connectedPlayers) {
 	        playerLabels.clear();
 	        centerHBox.getChildren().clear();

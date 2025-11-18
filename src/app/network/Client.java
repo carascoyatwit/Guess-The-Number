@@ -196,6 +196,11 @@ public class Client implements Runnable {
             int id = msg.getClientID();
             String name = msg.getName();
             
+            if (UserConfigs.getClientName().equals(name) && UserConfigs.getMyClientID() == -1) {
+                UserConfigs.setMyClientID(id); // Store this specific client's ID
+                System.out.println("Assigned my ClientID: " + id); // For debugging
+            }
+            
             while (connectedPlayers.size() <= id) {
                 connectedPlayers.add(null);
             }

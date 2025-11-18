@@ -91,6 +91,13 @@ private  class HandleClient implements Runnable{
                 
                 //can handle any other messages that is a string
                 
+            }else if (obj instanceof PlayerGuessed) { 
+                PlayerGuessed guessedPacket = (PlayerGuessed) obj;
+                System.out.printf("Client %d (%s) guessed: %s\n", guessedPacket.getClientID(), name, guessedPacket.getGuess());
+                
+                // process the guess here (check if correct)
+               
+                broadcastToAll(guessedPacket); 
             }
         }
         

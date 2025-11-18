@@ -74,6 +74,8 @@ public class Client implements Runnable {
                               SceneLoader.LoadedScene<Scene4> loadedScene4 = SceneLoader.load("Scene4");
                                 stage.setScene(loadedScene4.scene);
                                 
+                                AppState.gameController = loadedScene4.controller;
+                                
                                 ArrayList<PlayerData> activePlayers = new ArrayList<>();
                                 for (PlayerData p : connectedPlayers) {
                                     if (p != null) { 
@@ -88,6 +90,11 @@ public class Client implements Runnable {
                             }
                         }
                      return; 
+                    }
+                    
+                    if (AppState.gameStarted && AppState.gameController != null) { 
+                        handleMessageForController(AppState.gameController, finalReceivedObject);
+                        return; 
                     }
                   
                     if (AppState.waitingRoomController == null) {
@@ -147,6 +154,32 @@ public class Client implements Runnable {
 
     
     private void handleMessageForController(Object controllerInstance, Object receivedPacket) {
+    	
+        // First check for Scene4-specific updates if game has started
+        if (AppState.gameStarted && controllerInstance instanceof Scene4) {
+            Scene4 gameController = (Scene4) controllerInstance;
+
+            if (receivedPacket instanceof PlayerDisconnect) {
+                PlayerDisconnect msg = (PlayerDisconnect) receivedPacket;
+                int id = msg.getClientID();
+                // Update connectedPlayers list (set to null)
+                if (id >= 0 && id < connectedPlayers.size()) {
+                    connectedPlayers.set(id, null);
+                }
+                Platform.runLater(() -> gameController.updateDisconnected(id)); // Update Scene4 UI on FX thread
+                return; // Handled
+                
+            }else if (receivedPacket instanceof PlayerGuessed) { // New: Handle PlayerGuessed
+            	
+                PlayerGuessed msg = (PlayerGuessed) receivedPacket;
+                
+                int id = msg.getClientID();
+                String guess = msg.getGuess();
+                Platform.runLater(() -> gameController.updatePlayerStatus(id, guess, "green", "green", "white")); // make an update player guess
+                return;
+            }
+   
+        }
         
         if (receivedPacket instanceof MaxPlayers) {
             MaxPlayers msg = (MaxPlayers) receivedPacket;

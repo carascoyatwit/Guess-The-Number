@@ -12,13 +12,15 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 public class Client implements Runnable {
 
     private ObjectOutputStream output;
     private ObjectInputStream input;
     public static Client currentClientInstance = null; // this is used to identify a specific client instance.
-
+    private ArrayList<PlayerData> connectedPlayers = new ArrayList<>();
+    
     public Client() { }
 
     @Override
@@ -71,7 +73,15 @@ public class Client implements Runnable {
                             if (stage != null) {
                               SceneLoader.LoadedScene<Scene4> loadedScene4 = SceneLoader.load("Scene4");
                                 stage.setScene(loadedScene4.scene);
-                      
+                                
+                                ArrayList<PlayerData> activePlayers = new ArrayList<>();
+                                for (PlayerData p : connectedPlayers) {
+                                    if (p != null) { 
+                                        activePlayers.add(p);
+                                    }
+                                }
+                                
+                                loadedScene4.controller.setupPlayerLabels(activePlayers);
                                 AppState.waitingRoomController = null;
                             } else {
                                 System.err.println("there is no stage?");
@@ -153,6 +163,11 @@ public class Client implements Runnable {
             int id = msg.getClientID();
             String name = msg.getName();
             
+            while (connectedPlayers.size() <= id) {
+                connectedPlayers.add(null);
+            }
+            connectedPlayers.set(id, new PlayerData(name)); 
+            
             if (controllerInstance instanceof Scene2) {
                 ((Scene2) controllerInstance).updateConnected(id, name);
            } else if (controllerInstance instanceof Scene3) {
@@ -162,6 +177,10 @@ public class Client implements Runnable {
         } else if (receivedPacket instanceof PlayerDisconnect) {
             PlayerDisconnect msg = (PlayerDisconnect) receivedPacket;
             int id = msg.getClientID();
+            
+            if (id >= 0 && id < connectedPlayers.size()) {
+                connectedPlayers.set(id, null);
+            }
             
             if (controllerInstance instanceof Scene2) {
                 ((Scene2) controllerInstance).updateDisconnected(id);

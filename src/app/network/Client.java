@@ -175,7 +175,7 @@ public class Client implements Runnable {
                 
                 int id = msg.getClientID();
                 String guess = msg.getGuess();
-                Platform.runLater(() -> gameController.updatePlayerStatus(id, guess, "green", "green", "white")); // make an update player guess
+                Platform.runLater(() -> gameController.updatePlayerGuess(id, guess)); // make an update player guess
                 return;
             }
    

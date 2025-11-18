@@ -110,5 +110,17 @@ public class Scene4 {
 	            }
 	        }
 	    }
-
+	 
+	 public void updatePlayerGuess(int clientID, String guess) {
+	        if (clientID >= 0 && clientID < playerLabels.size()) {
+	            Label lbl = playerLabels.get(clientID);
+	            if (lbl != null) {
+	                
+	                String originalName = lbl.getText().split(" \\(")[0]; 
+	                lbl.setText(originalName + " (Guessed: " + guess + ")");
+	               
+	                lbl.setStyle("-fx-text-fill: #FFFF00; -fx-border-color: #FFFF00; -fx-background-color: #FFFF0080;"); // Yellow
+	            }
+	        }
+	 }
 }

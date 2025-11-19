@@ -83,14 +83,13 @@ public class Scene4 {
 	    }
 	 
 	 public void updateDisconnected(int clientID) {
-	        // Find the label using its assigned ID or by iterating if IDs are not set
-	        // A more robust way would be to ensure playerLabels are in order of clientID
-	        // and directly access them by index.
 	        if (clientID >= 0 && clientID < playerLabels.size()) {
 	             Label lbl = playerLabels.get(clientID);
+	             
 	             if (lbl != null) {
-	                 lbl.setText(lbl.getText().replace(" (Disconnected)", "") + " (Disconnected)"); // Append disconnected status
-	                 lbl.setStyle("-fx-text-fill: #FF0000; -fx-border-color: #FF0000; -fx-background-color: #FF000080;"); // Red
+	            	 
+	                 lbl.setText(lbl.getText().replace(" (Disconnected)", "") + " (Disconnected)"); 
+	                 lbl.setStyle("-fx-text-fill: #FF0000; -fx-border-color: #FF0000; -fx-background-color: #FF000080;"); 
 	             }
 	        }
 	    }
@@ -114,8 +113,8 @@ public class Scene4 {
 	                
 	                String originalName = lbl.getText().split(" \\(")[0]; 
 	                lbl.setText(originalName + " (Guessed: " + guess + ")");
-	               
-	                lbl.setStyle("-fx-text-fill: #FFFF00; -fx-border-color: #FFFF00; -fx-background-color: #FFFF0080;"); // Yellow
+	                lbl.setStyle("-fx-text-fill: #50C878; -fx-border-color: #50C878; -fx-background-color: #50C87880;");
+	              
 	            }
 	        }
 	 }

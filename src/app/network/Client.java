@@ -28,7 +28,7 @@ public class Client implements Runnable {
        try (Socket socket = new Socket(UserConfigs.getServerHost(), UserConfigs.getServerPort())) {
             System.out.println("Connected to server at " + UserConfigs.getServerHost() + ":" + UserConfigs.getServerPort());
 
-          Client.currentClientInstance = this; // Assign this client instance to the static field
+          Client.currentClientInstance = this; 
           
             output = new ObjectOutputStream(socket.getOutputStream());
            input = new ObjectInputStream(socket.getInputStream());
@@ -112,13 +112,13 @@ public class Client implements Runnable {
                         handleMessageForController(controller, finalReceivedObject); 
                         
                   } else {
-                     System.err.println("A different controller? Type: " + AppState.waitingRoomController.getClass().getName());
+                     System.err.println("A different controller?: " + AppState.waitingRoomController.getClass().getName());
                        }
                 }); 
          }
 
         } catch (Exception e) {
-            System.out.println(e); 
+            System.err.println(e); 
             
         }finally {
         	if (Client.currentClientInstance == this) {
@@ -142,10 +142,9 @@ public class Client implements Runnable {
     			
                 output.writeObject(packet);
                 output.flush();
-                
-              System.out.println("sent: " + packet.getClass().getSimpleName()); 
+             
             } catch (IOException e) {
-                System.err.println("failed: " + packet.getClass().getSimpleName());
+                System.err.println("failed to send");
             } 
     	} else {
             System.err.println("failed"); 
@@ -162,14 +161,14 @@ public class Client implements Runnable {
             if (receivedPacket instanceof PlayerDisconnect) {
                 PlayerDisconnect msg = (PlayerDisconnect) receivedPacket;
                 int id = msg.getClientID();
-                // Update connectedPlayers list (set to null)
+                
                 if (id >= 0 && id < connectedPlayers.size()) {
                     connectedPlayers.set(id, null);
                 }
-                Platform.runLater(() -> gameController.updateDisconnected(id)); // Update Scene4 UI on FX thread
-                return; // Handled
+              Platform.runLater(() -> gameController.updateDisconnected(id)); 
+                return; 
                 
-            }else if (receivedPacket instanceof PlayerGuessed) { // New: Handle PlayerGuessed
+           }else if (receivedPacket instanceof PlayerGuessed) { 
             	
                 PlayerGuessed msg = (PlayerGuessed) receivedPacket;
                 

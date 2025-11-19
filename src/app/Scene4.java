@@ -93,19 +93,7 @@ public class Scene4 {
 	             }
 	        }
 	    }
-	 
-	 public void updatePlayerStatus(int clientID, String status, String textColor, String borderColor, String backgroundColor) {
-	        if (clientID >= 0 && clientID < playerLabels.size()) {
-	            Label lbl = playerLabels.get(clientID);
-	            if (lbl != null) {
-	                String originalName = lbl.getText().split(" \\(")[0]; // Get original name without status
-	                lbl.setText(originalName + " (" + status + ")");
-	                lbl.setStyle(String.format("-fx-text-fill: %s; -fx-border-color: %s; -fx-background-color: %s;",
-	                                           textColor, borderColor, backgroundColor));
-	            }
-	        }
-	    }
-	 
+
 	 public void updatePlayerGuess(int clientID, String guess) {
 	        if (clientID >= 0 && clientID < playerLabels.size()) {
 	            Label lbl = playerLabels.get(clientID);
@@ -118,4 +106,18 @@ public class Scene4 {
 	            }
 	        }
 	 }
+	 
+	 public void updatePlayerWin(int clientID, String guess) {
+	        if (clientID >= 0 && clientID < playerLabels.size()) {
+	            Label lbl = playerLabels.get(clientID);
+	            if (lbl != null) {
+	                
+	                String originalName = lbl.getText().split(" \\(")[0]; 
+	                lbl.setText(originalName + " (Guessed: " + guess + ")");
+	                lbl.setStyle("-fx-text-fill: #FFD700; -fx-border-color: #FFD700; -fx-background-color: #FFD70080;");
+	              
+	            }
+	        }
+	 }
+	 
 }

@@ -95,9 +95,17 @@ private  class HandleClient implements Runnable{
                 PlayerGuessed guessedPacket = (PlayerGuessed) obj;
                 System.out.printf("Client %d (%s) guessed: %s\n", guessedPacket.getClientID(), name, guessedPacket.getGuess());
                 
-                // process the guess here (check if correct)
-               
-                broadcastToAll(guessedPacket); 
+                //guess is processed here
+                if ("50".equals(guessedPacket.getGuess())) {
+                    System.out.println("Client " + guessedPacket.getClientID() + " guessed 50! Declaring winner.");
+                  
+                    broadcastToAll(new PlayerWin(true, guessedPacket.getClientID()));
+                 
+                    continue; 
+                } else {
+                   
+                    broadcastToAll(guessedPacket);
+                }
             }
         }
         

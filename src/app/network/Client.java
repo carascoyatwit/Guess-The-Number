@@ -176,6 +176,15 @@ public class Client implements Runnable {
                 String guess = msg.getGuess();
                 Platform.runLater(() -> gameController.updatePlayerGuess(id, guess)); // make an update player guess
                 return;
+                
+            }else if (receivedPacket instanceof PlayerWin) { 
+                PlayerWin msg = (PlayerWin) receivedPacket;
+                if (msg.getWinStatus()) { 
+                	
+                    int winningID = msg.getWinningClientID();
+                    Platform.runLater(() -> gameController.updatePlayerWin(winningID)); 
+                }
+                return;
             }
    
         }

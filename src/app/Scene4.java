@@ -107,13 +107,13 @@ public class Scene4 {
 	        }
 	 }
 	 
-	 public void updatePlayerWin(int clientID, String guess) {
+	 public void updatePlayerWin(int clientID) {
 	        if (clientID >= 0 && clientID < playerLabels.size()) {
 	            Label lbl = playerLabels.get(clientID);
 	            if (lbl != null) {
 	                
 	                String originalName = lbl.getText().split(" \\(")[0]; 
-	                lbl.setText(originalName + " (Guessed: " + guess + ")");
+	                lbl.setText(originalName + " (Winner!)");
 	                lbl.setStyle("-fx-text-fill: #FFD700; -fx-border-color: #FFD700; -fx-background-color: #FFD70080;");
 	              
 	            }

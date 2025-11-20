@@ -140,10 +140,6 @@ public class Scene4 {
 		        if (lbl != null) {
 		            String originalName = lbl.getText().split(" \\(")[0]; 
 		            lbl.setText(originalName);
-		            
-		            answerlabel.setText("???");
-		            answerlabel.setStyle("#E0E0E0");
-		            
 		            lbl.setStyle(
 		                "-fx-text-fill: #ADD8E6;" + 
 		                "-fx-font-size: 20px;" +
@@ -155,9 +151,13 @@ public class Scene4 {
 		                "-fx-border-radius: 15px;" +
 		                "-fx-font-family: \"Nunito\";"
 		            );
+		     }
 		        }
-		    }
+		    
+		    
+            answerlabel.setText("???");
+            answerlabel.setStyle("#E0E0E0");
+            
 		}
 
-	 
 }

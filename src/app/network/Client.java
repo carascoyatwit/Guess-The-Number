@@ -174,12 +174,13 @@ public class Client implements Runnable {
                 
                 int id = msg.getClientID();
                 String guess = msg.getGuess();
-                Platform.runLater(() -> gameController.updatePlayerGuess(id, guess)); // make an update player guess
+                Platform.runLater(() -> gameController.updatePlayerGuess(id, guess)); 
                 return;
                 
             }else if (receivedPacket instanceof PlayerWin) { 
+            	
                 PlayerWin msg = (PlayerWin) receivedPacket;
-                String target = msg.getTarget();
+              String target = msg.getTarget();
 
                 if (msg.getWinStatus()) { 
                     ArrayList<Integer> winners = msg.getWinningIDs();
@@ -201,31 +202,20 @@ public class Client implements Runnable {
             	NextRound msg = (NextRound) receivedPacket;
             	String target = msg.getTarget();
 
-            	Platform.runLater(() -> gameController.updateAnswerLabel(target));
-            	
-//            	new Thread(() -> {
-//                    try {
-//                        Thread.sleep(1500);
-//                    } catch (InterruptedException ignored) {}
-//                }).start();
+           	Platform.runLater(() -> gameController.updateAnswerLabel(target));
 
             	new Thread(() -> {
                     try {
-                        // Flash red on UI
+                 
                         Platform.runLater(() -> gameController.flashRed());
 
-                        // Wait 1.5 seconds
                         Thread.sleep(1500);
 
-                        // Reset the round after delay
                         Platform.runLater(() -> gameController.resetRound());
-
                     } catch (InterruptedException ignored) {}
-                }).start();
-            	
-            	//Platform.runLater(() -> gameController.resetRound());
-
+               }).start();
         
+           	
             }
 
    

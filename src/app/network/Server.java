@@ -12,6 +12,7 @@ public class Server {
     private ArrayList<HandleClient> clients = new ArrayList<>();
     private List<PlayerData> players = Collections.synchronizedList(new ArrayList<>());
     private int max;
+    private final List<String> guesses = Collections.synchronizedList(new ArrayList<>());
     
     public Server() {
     	
@@ -91,20 +92,42 @@ private  class HandleClient implements Runnable{
                 
                 //can handle any other messages that is a string
                 
-            }else if (obj instanceof PlayerGuessed) { 
+            } else if (obj instanceof PlayerGuessed) { 
                 PlayerGuessed guessedPacket = (PlayerGuessed) obj;
-                System.out.printf("Client %d (%s) guessed: %s\n", guessedPacket.getClientID(), name, guessedPacket.getGuess());
-                
-                //guess is processed here
-                if ("50".equals(guessedPacket.getGuess())) {
-                    System.out.println("Client " + guessedPacket.getClientID() + " guessed 50! Declaring winner.");
-                  
-                    broadcastToAll(new PlayerWin(true, guessedPacket.getClientID()));
-                 
-                    continue; 
-                } else {
-                   
-                    broadcastToAll(guessedPacket);
+                int id = guessedPacket.getClientID();
+                String guess = guessedPacket.getGuess();
+
+                System.out.printf("Client %d (%s) guessed: %s\n", id, name, guess);
+
+                // Ensure guess list matches number of players
+                while (guesses.size() <= id) {
+                    guesses.add(null);
+                }
+
+                // Store the guess
+                guesses.set(id, guess);
+
+                // Broadcast guess update to all clients (UI update)
+                broadcastToAll(guessedPacket);
+
+                // Check if ALL players have guessed
+                boolean allGuessed = true;
+                for (int i = 0; i < players.size(); i++) {
+                    if (i >= guesses.size() || guesses.get(i) == null) {
+                        allGuessed = false;
+                        break;
+                    }
+                }
+
+                // If all players guessed → wait 2 seconds → reveal winners
+                if (allGuessed) {
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(2000);  // wait 2 seconds
+                        } catch (InterruptedException ignored) {}
+
+                        revealWinners(); 
+                    }).start();
                 }
             }
         }
@@ -127,6 +150,27 @@ private  class HandleClient implements Runnable{
             } catch (IOException ignored) { } // who cares really.
 		}
 	}
+}
+
+private void revealWinners() {
+    String target = "50"; 
+
+    Integer winningID = null;
+
+    for (int i = 0; i < guesses.size(); i++) {
+        if (target.equals(guesses.get(i))) {
+            winningID = i;
+            break;
+        }
+    }
+
+    if (winningID != null) {
+        System.out.println("Winner is player " + winningID);
+        broadcastToAll(new PlayerWin(true, winningID));
+    } else {
+        System.out.println("No player guessed correctly.");
+        broadcastToAll(new PlayerWin(false, -1));
+    }
 }
     	
 private void broadcastToAll(Message message) {

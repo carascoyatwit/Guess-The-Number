@@ -194,13 +194,27 @@ public class Client implements Runnable {
 
             	Platform.runLater(() -> gameController.updateAnswerLabel(target));
             	
+//            	new Thread(() -> {
+//                    try {
+//                        Thread.sleep(1500);
+//                    } catch (InterruptedException ignored) {}
+//                }).start();
+
             	new Thread(() -> {
                     try {
-                        Thread.sleep(1500); 
+                        // Flash red on UI
+                        Platform.runLater(() -> gameController.flashRed());
+
+                        // Wait 1.5 seconds
+                        Thread.sleep(1500);
+
+                        // Reset the round after delay
+                        Platform.runLater(() -> gameController.resetRound());
+
                     } catch (InterruptedException ignored) {}
                 }).start();
             	
-            	Platform.runLater(() -> gameController.resetRound());
+            	//Platform.runLater(() -> gameController.resetRound());
 
         
             }

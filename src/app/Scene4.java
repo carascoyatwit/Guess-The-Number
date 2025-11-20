@@ -7,7 +7,6 @@ import app.packets.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.Node;
 
 public class Scene4 {
 
@@ -127,6 +126,12 @@ public class Scene4 {
 		 
 	 }
 	 
+	 public void flashRed() {
+		 for (Label lbl : playerLabels) {
+			 lbl.setStyle("-fx-text-fill: #FF0000; -fx-border-color: #FF0000; -fx-background-color: #FF000080;");
+		 }
+	 }
+	 
 	 public void resetRound() {
 		    guessInput.setDisable(false);
 		    guessInput.clear();
@@ -135,7 +140,10 @@ public class Scene4 {
 		        if (lbl != null) {
 		            String originalName = lbl.getText().split(" \\(")[0]; 
 		            lbl.setText(originalName);
-		            updateAnswerLabel("");
+		            
+		            answerlabel.setText("???");
+		            answerlabel.setStyle("#E0E0E0");
+		            
 		            lbl.setStyle(
 		                "-fx-text-fill: #ADD8E6;" + 
 		                "-fx-font-size: 20px;" +

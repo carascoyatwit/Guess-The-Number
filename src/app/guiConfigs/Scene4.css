@@ -28,6 +28,10 @@
     -fx-alignment: CENTER; 
 }
 
+.button:hover {
+    -fx-background-color: #FFFFFFAA;
+}
+
 #guessInput {
     -fx-background-color: #2A2A40;
     -fx-text-fill: #FFFFFF;

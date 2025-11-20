@@ -155,22 +155,21 @@ private  class HandleClient implements Runnable{
 private void revealWinners() {
     String target = "50"; 
 
-    Integer winningID = null;
+    ArrayList<Integer> winners = new ArrayList<>();
 
     for (int i = 0; i < guesses.size(); i++) {
         if (target.equals(guesses.get(i))) {
-            winningID = i;
-            break;
+            winners.add(i);
         }
     }
 
-    if (winningID != null) {
-        System.out.println("Winner is player " + winningID);
-        broadcastToAll(new PlayerWin(true, winningID, target));
+    if (!winners.isEmpty()) {
+        System.out.println("Winner is player " + winners);
+        broadcastToAll(new PlayerWin(true, winners, target)); // send all winners;
     } else {
-        System.out.println("No player guessed correctly.");
-        broadcastToAll(new PlayerWin(false, -1, target));
-        broadcastToAll(new NextRound(target));
+    	 System.out.println("No player guessed correctly.");
+         broadcastToAll(new PlayerWin(false, new ArrayList<>(), target));
+         broadcastToAll(new NextRound(target));
     }
     
     for (int i = 0; i < guesses.size(); i++) {

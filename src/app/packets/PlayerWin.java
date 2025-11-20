@@ -1,19 +1,20 @@
 package app.packets;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class PlayerWin extends Message implements Serializable {
 
 	private static final long serialVersionUID = 7L;
 	
 	private boolean winStatus;
-	private int winningClientID;
+	private ArrayList<Integer> winningIDs;
 	private String target;
 
-	public PlayerWin(boolean winStatus, int winningClientID, String target) {
+	public PlayerWin(boolean winStatus, ArrayList<Integer> winningIDs, String target) {
 		
 		this.winStatus = winStatus;
-		this.winningClientID = winningClientID;
+		this.winningIDs = winningIDs;
 		this.target = target;
 		
 	}
@@ -22,9 +23,9 @@ public class PlayerWin extends Message implements Serializable {
 		return winStatus;
 	}
 	
-	public int getWinningClientID() {
-		return winningClientID;
-	}
+	 public ArrayList<Integer> getWinningIDs() {
+	        return winningIDs;
+	    }
 	
 	public String getTarget() {
 		return target;

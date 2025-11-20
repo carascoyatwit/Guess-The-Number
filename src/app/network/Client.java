@@ -180,12 +180,21 @@ public class Client implements Runnable {
             }else if (receivedPacket instanceof PlayerWin) { 
                 PlayerWin msg = (PlayerWin) receivedPacket;
                 String target = msg.getTarget();
+
                 if (msg.getWinStatus()) { 
+                    ArrayList<Integer> winners = msg.getWinningIDs();
+
+                    Platform.runLater(() -> {
+                        for (int winningID : winners) {
+                            gameController.updatePlayerWin(winningID); 
+                        }
+                        gameController.updateAnswerLabel(target);
+                    });
+                } else {
                 	
-                    int winningID = msg.getWinningClientID();
-                    Platform.runLater(() -> gameController.updatePlayerWin(winningID)); 
                     Platform.runLater(() -> gameController.updateAnswerLabel(target));
                 }
+
                 return;
             }else if (receivedPacket instanceof NextRound) {
  

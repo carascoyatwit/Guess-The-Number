@@ -22,11 +22,26 @@ public class Scene4 {
 	@FXML
 	private TextField guessInput;
 	
+	@FXML
+	private HBox bottomHBox;
+	
 	private ArrayList<Label> playerLabels = new ArrayList<>();
+	private Button exitButton = new Button("Exit");
 	
 	public void initialize() {
 		centerVBox.setSpacing(90);
 		centerHBox.setSpacing(50);
+		
+		exitButton.setStyle(
+				"-fx-text-fill: #FFFFFF;"+
+				"-fx-border-color: #FFFFFF;" +
+				"-fx-background-color: #FFFFFF80;" +
+				"-fx-background-radius: 15px;" +
+				"-fx-border-radius: 15px;" +
+				"-fx-font-size: 20px;" +
+				"-fx-pref-width: 200px;" + 
+				"-fx-pref-height: 50px;"
+				);
 		
 		 guessInput.textProperty().addListener((observable, oldValue, newValue) -> {
 	            if (!newValue.matches("\\d*")) { 
@@ -117,6 +132,13 @@ public class Scene4 {
 	              
 	            }
 	        }
+	        
+	        int index = bottomHBox.getChildren().indexOf(guessInput);
+	        if (index != -1) {
+	            // Replace the old label with the new label
+	            bottomHBox.getChildren().set(index, exitButton);
+	        }
+	        
 	 }
 	 
 	 public void updateAnswerLabel(String target) {

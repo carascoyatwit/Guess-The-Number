@@ -13,11 +13,12 @@ public class Server {
     private List<PlayerData> players = Collections.synchronizedList(new ArrayList<>());
     private int max;
     private final List<String> guesses = Collections.synchronizedList(new ArrayList<>());
+    private int targetNumber;
     
     public Server() {
     	
     	this.max = UserConfigs.getSetClients();
-    	
+    	generateNewTarget();
     	try {
 			serverSocket = new ServerSocket(UserConfigs.getServerPort());
 			System.out.println("Server started on port " + UserConfigs.getServerPort());
@@ -153,29 +154,36 @@ private  class HandleClient implements Runnable{
 }
 
 private void revealWinners() {
-    String target = "50"; 
 
     ArrayList<Integer> winners = new ArrayList<>();
 
     for (int i = 0; i < guesses.size(); i++) {
-        if (target.equals(guesses.get(i))) {
+        if (guesses.get(i) != null && Integer.parseInt(guesses.get(i)) == targetNumber) {
             winners.add(i);
         }
     }
 
     if (!winners.isEmpty()) {
         System.out.println("Winner is player " + winners);
-        broadcastToAll(new PlayerWin(true, winners, target)); // send all winners;
+        broadcastToAll(new PlayerWin(true, winners, String.valueOf(targetNumber))); // send all winners;
     } else {
     	 System.out.println("No player guessed correctly.");
-         broadcastToAll(new PlayerWin(false, new ArrayList<>(), target));
-         broadcastToAll(new NextRound(target));
+         broadcastToAll(new PlayerWin(false, new ArrayList<>(), String.valueOf(targetNumber)));
+         broadcastToAll(new NextRound(String.valueOf(targetNumber)));
     }
     
     for (int i = 0; i < guesses.size(); i++) {
         guesses.set(i, null);
     }
+    
+    generateNewTarget();
 }
+
+private void generateNewTarget() {
+    targetNumber = 1 + (int)(Math.random() * 20);
+    System.out.println("New target number: " + targetNumber);
+}
+
     	
 private void broadcastToAll(Message message) {
     for (HandleClient c : clients) {

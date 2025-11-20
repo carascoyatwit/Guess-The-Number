@@ -8,11 +8,13 @@ public class PlayerWin extends Message implements Serializable {
 	
 	private boolean winStatus;
 	private int winningClientID;
+	private String target;
 
-	public PlayerWin(boolean winStatus, int winningClientID) {
+	public PlayerWin(boolean winStatus, int winningClientID, String target) {
 		
 		this.winStatus = winStatus;
 		this.winningClientID = winningClientID;
+		this.target = target;
 		
 	}
 	
@@ -23,8 +25,9 @@ public class PlayerWin extends Message implements Serializable {
 	public int getWinningClientID() {
 		return winningClientID;
 	}
-	@Override
-	public String toString() {
-        return "PlayerWin [Win=" + winStatus + ", ClientID=" + winningClientID + "]"; 
-    }
+	
+	public String getTarget() {
+		return target;
+	}
+	
 }

@@ -119,16 +119,16 @@ private  class HandleClient implements Runnable{
                     }
                 }
 
-                // If all players guessed → wait 2 seconds → reveal winners
                 if (allGuessed) {
                     new Thread(() -> {
                         try {
-                            Thread.sleep(2000);  // wait 2 seconds
+                            Thread.sleep(1500); 
                         } catch (InterruptedException ignored) {}
 
                         revealWinners(); 
                     }).start();
                 }
+
             }
         }
         
@@ -166,10 +166,15 @@ private void revealWinners() {
 
     if (winningID != null) {
         System.out.println("Winner is player " + winningID);
-        broadcastToAll(new PlayerWin(true, winningID));
+        broadcastToAll(new PlayerWin(true, winningID, target));
     } else {
         System.out.println("No player guessed correctly.");
-        broadcastToAll(new PlayerWin(false, -1));
+        broadcastToAll(new PlayerWin(false, -1, target));
+        broadcastToAll(new NextRound(target));
+    }
+    
+    for (int i = 0; i < guesses.size(); i++) {
+        guesses.set(i, null);
     }
 }
     	

@@ -179,13 +179,32 @@ public class Client implements Runnable {
                 
             }else if (receivedPacket instanceof PlayerWin) { 
                 PlayerWin msg = (PlayerWin) receivedPacket;
+                String target = msg.getTarget();
                 if (msg.getWinStatus()) { 
                 	
                     int winningID = msg.getWinningClientID();
                     Platform.runLater(() -> gameController.updatePlayerWin(winningID)); 
+                    Platform.runLater(() -> gameController.updateAnswerLabel(target));
                 }
                 return;
+            }else if (receivedPacket instanceof NextRound) {
+ 
+            	NextRound msg = (NextRound) receivedPacket;
+            	String target = msg.getTarget();
+
+            	Platform.runLater(() -> gameController.updateAnswerLabel(target));
+            	
+            	new Thread(() -> {
+                    try {
+                        Thread.sleep(1500); 
+                    } catch (InterruptedException ignored) {}
+                }).start();
+            	
+            	Platform.runLater(() -> gameController.resetRound());
+
+        
             }
+
    
         }
         

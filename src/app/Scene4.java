@@ -110,11 +110,7 @@ public class Scene4 {
 	 public void updatePlayerWin(int clientID) {
 	        if (clientID >= 0 && clientID < playerLabels.size()) {
 	            Label lbl = playerLabels.get(clientID);
-	            answerlabel.setText("50");
-	            answerlabel.setStyle("-fx-text-fill: #FFD700");
-	            
-	            
-	            
+	        
 	            if (lbl != null) {
 	                String originalName = lbl.getText().split(" \\(")[0]; 
 	                lbl.setText(originalName + " (Winner!)");
@@ -123,5 +119,37 @@ public class Scene4 {
 	            }
 	        }
 	 }
+	 
+	 public void updateAnswerLabel(String target) {
+		 
+		 answerlabel.setText(target);
+         answerlabel.setStyle("-fx-text-fill: #FFD700");
+		 
+	 }
+	 
+	 public void resetRound() {
+		    guessInput.setDisable(false);
+		    guessInput.clear();
+
+		    for (Label lbl : playerLabels) {
+		        if (lbl != null) {
+		            String originalName = lbl.getText().split(" \\(")[0]; 
+		            lbl.setText(originalName);
+		            updateAnswerLabel("");
+		            lbl.setStyle(
+		                "-fx-text-fill: #ADD8E6;" + 
+		                "-fx-font-size: 20px;" +
+		                "-fx-font-weight: bold;" + 
+		                "-fx-padding: 30px 40px;" + 
+		                "-fx-background-color: #ADD8E680;" + 
+		                "-fx-background-radius: 15px;" + 
+		                "-fx-border-color: #ADD8E6;" + 
+		                "-fx-border-radius: 15px;" +
+		                "-fx-font-family: \"Nunito\";"
+		            );
+		        }
+		    }
+		}
+
 	 
 }

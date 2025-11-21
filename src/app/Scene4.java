@@ -56,6 +56,11 @@ public class Scene4 {
 		utilHBox.setPadding(new Insets(30, 0, 0 ,0));
 		emptyNode(utilHBox, 0, 150, false);
 		
+		backButton.setOnAction(e -> {
+		    if (Client.currentClientInstance != null) {
+		        Client.currentClientInstance.disconnectAndReturnHome();
+		    }
+		});
 		
 		String normalStyle = 
 			    "-fx-text-fill: #FFFFFF;" +

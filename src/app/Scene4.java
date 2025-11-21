@@ -32,6 +32,12 @@ public class Scene4 {
 		centerVBox.setSpacing(90);
 		centerHBox.setSpacing(50);
 		
+		exitButton.setOnAction(e -> {
+		    if (Client.currentClientInstance != null) {
+		        Client.currentClientInstance.disconnectAndReturnHome();
+		    }
+		});
+		
 		
 		String normalStyle = 
 			    "-fx-text-fill: #FFFFFF;" +
@@ -57,20 +63,7 @@ public class Scene4 {
 
 			exitButton.setOnMouseEntered(e -> exitButton.setStyle(hoverStyle));
 			exitButton.setOnMouseExited(e -> exitButton.setStyle(normalStyle));
-		
-//		exitButton.setStyle(
-//				"-fx-text-fill: #FFFFFF;"+
-//				"-fx-border-color: #FFFFFF;" +
-//				"-fx-background-color: #FFFFFF80;" +
-//				"-fx-background-radius: 15px;" +
-//				"-fx-border-radius: 15px;" +
-//				"-fx-font-size: 20px;" +
-//				"-fx-pref-width: 200px;" + 
-//				"-fx-pref-height: 50px;"
-//				);
-//		exitButton.setOnMouseEntered(e -> exitButton.setStyle("-fx-background-color: #FFFFFFAA;"));
-//		exitButton.setOnMouseExited(e -> exitButton.setStyle("-fx-background-color: #FFD700;"));
-		
+
 		 guessInput.textProperty().addListener((observable, oldValue, newValue) -> {
 	            if (!newValue.matches("\\d*")) { 
 	                guessInput.setText(""); 

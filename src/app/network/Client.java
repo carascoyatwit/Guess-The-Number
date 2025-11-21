@@ -8,7 +8,8 @@ import app.Scene4;
 import app.packets.*; 
 import app.misc.SceneLoader; 
 import javafx.application.Platform;
-import javafx.stage.Stage; 
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.*;
 import java.net.*;
@@ -112,13 +113,15 @@ public class Client implements Runnable {
                         handleMessageForController(controller, finalReceivedObject); 
                         
                   } else {
-                     System.err.println("A different controller?: " + AppState.waitingRoomController.getClass().getName());
+                     System.out.println("A different controller?: " + AppState.waitingRoomController.getClass().getName());
                        }
                 }); 
          }
 
-        } catch (Exception e) {
-            System.err.println(e); 
+        }catch (EOFException | SocketException e) {
+        	System.out.println("Client disconnected cleanly.");
+        }catch (Exception e) {
+            System.out.println(e); 
             
         }finally {
         	if (Client.currentClientInstance == this) {
@@ -277,6 +280,32 @@ public class Client implements Runnable {
         } else {
             System.out.println("Client received an unknown object: " + receivedPacket.getClass().getName());
         }
+    }
+    
+    public void disconnectAndReturnHome() {
+        try {
+            if (output != null) output.close();
+            if (input != null) input.close();
+        } catch (Exception ignored) {}
+
+        Client.currentClientInstance = null;
+
+        // Return to home screen safely
+        Platform.runLater(() -> {
+            SceneLoader.LoadedScene<?> home = SceneLoader.load("Scene1");
+            Stage stage = getCurrentStage();
+            if (stage != null) {
+                stage.setScene(home.scene);
+            }
+        });
+    }
+    
+    private Stage getCurrentStage() {
+        return (Stage) javafx.stage.Window.getWindows()
+                .stream()
+                .filter(Window::isShowing)
+                .findFirst()
+                .orElse(null);
     }
 
     public static void main(String[] args) {

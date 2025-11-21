@@ -100,18 +100,18 @@ private  class HandleClient implements Runnable{
 
                 System.out.printf("Client %d (%s) guessed: %s\n", id, name, guess);
 
-                // Ensure guess list matches number of players
+               
                 while (guesses.size() <= id) {
                     guesses.add(null);
                 }
 
-                // Store the guess
+                
                 guesses.set(id, guess);
 
-                // Broadcast guess update to all clients (UI update)
+               
                 broadcastToAll(guessedPacket);
 
-                // Check if ALL players have guessed
+                
                 boolean allGuessed = true;
                 for (int i = 0; i < players.size(); i++) {
                     if (i >= guesses.size() || guesses.get(i) == null) {
@@ -141,6 +141,7 @@ private  class HandleClient implements Runnable{
              players.removeIf(p -> p.getName().equals(name));
              UserConfigs.decrementClients();
              broadcastToAll(new PlayerDisconnect(clientID));
+             clients.remove(this);
              
              
 		}finally {

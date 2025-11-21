@@ -7,6 +7,7 @@ public class UserConfigs {
     private static int clients = 0;
     private static String serverHost = "localhost";
     private static int serverPort = 8080;
+    private static int myClientID = -1;
     
     public static String getClientName() {
         return clientName;
@@ -54,6 +55,14 @@ public class UserConfigs {
 
     public static void setServerPort(int port) {
         serverPort = port;
+    }
+    
+    public static int getMyClientID() {
+        return myClientID;
+    }
+
+    public static void setMyClientID(int id) {
+        myClientID = id;
     }
 
 }

@@ -8,7 +8,8 @@ import app.Scene4;
 import app.packets.*; 
 import app.misc.SceneLoader; 
 import javafx.application.Platform;
-import javafx.stage.Stage; 
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.*;
 import java.net.*;
@@ -28,7 +29,7 @@ public class Client implements Runnable {
        try (Socket socket = new Socket(UserConfigs.getServerHost(), UserConfigs.getServerPort())) {
             System.out.println("Connected to server at " + UserConfigs.getServerHost() + ":" + UserConfigs.getServerPort());
 
-          Client.currentClientInstance = this; // Assign this client instance to the static field
+          Client.currentClientInstance = this; 
           
             output = new ObjectOutputStream(socket.getOutputStream());
            input = new ObjectInputStream(socket.getInputStream());
@@ -74,6 +75,8 @@ public class Client implements Runnable {
                               SceneLoader.LoadedScene<Scene4> loadedScene4 = SceneLoader.load("Scene4");
                                 stage.setScene(loadedScene4.scene);
                                 
+                                AppState.gameController = loadedScene4.controller;
+                                
                                 ArrayList<PlayerData> activePlayers = new ArrayList<>();
                                 for (PlayerData p : connectedPlayers) {
                                     if (p != null) { 
@@ -88,6 +91,11 @@ public class Client implements Runnable {
                             }
                         }
                      return; 
+                    }
+                    
+                    if (AppState.gameStarted && AppState.gameController != null) { 
+                        handleMessageForController(AppState.gameController, finalReceivedObject);
+                        return; 
                     }
                   
                     if (AppState.waitingRoomController == null) {
@@ -105,12 +113,14 @@ public class Client implements Runnable {
                         handleMessageForController(controller, finalReceivedObject); 
                         
                   } else {
-                     System.err.println("A different controller? Type: " + AppState.waitingRoomController.getClass().getName());
+                     System.out.println("A different controller?: " + AppState.waitingRoomController.getClass().getName());
                        }
                 }); 
          }
 
-        } catch (Exception e) {
+        }catch (EOFException | SocketException e) {
+        	System.out.println("Client disconnected cleanly.");
+        }catch (Exception e) {
             System.out.println(e); 
             
         }finally {
@@ -135,10 +145,9 @@ public class Client implements Runnable {
     			
                 output.writeObject(packet);
                 output.flush();
-                
-              System.out.println("sent: " + packet.getClass().getSimpleName()); 
+             
             } catch (IOException e) {
-                System.err.println("failed: " + packet.getClass().getSimpleName());
+                System.err.println("failed to send");
             } 
     	} else {
             System.err.println("failed"); 
@@ -147,6 +156,73 @@ public class Client implements Runnable {
 
     
     private void handleMessageForController(Object controllerInstance, Object receivedPacket) {
+    	
+        // First check for Scene4-specific updates if game has started
+        if (AppState.gameStarted && controllerInstance instanceof Scene4) {
+            Scene4 gameController = (Scene4) controllerInstance;
+
+            if (receivedPacket instanceof PlayerDisconnect) {
+                PlayerDisconnect msg = (PlayerDisconnect) receivedPacket;
+                int id = msg.getClientID();
+                
+                if (id >= 0 && id < connectedPlayers.size()) {
+                    connectedPlayers.set(id, null);
+                }
+              Platform.runLater(() -> gameController.updateDisconnected(id)); 
+                return; 
+                
+           }else if (receivedPacket instanceof PlayerGuessed) { 
+            	
+                PlayerGuessed msg = (PlayerGuessed) receivedPacket;
+                
+                int id = msg.getClientID();
+                String guess = msg.getGuess();
+                Platform.runLater(() -> gameController.updatePlayerGuess(id, guess)); 
+                return;
+                
+            }else if (receivedPacket instanceof PlayerWin) { 
+            	
+                PlayerWin msg = (PlayerWin) receivedPacket;
+              String target = msg.getTarget();
+
+                if (msg.getWinStatus()) { 
+                    ArrayList<Integer> winners = msg.getWinningIDs();
+
+                    Platform.runLater(() -> {
+                        for (int winningID : winners) {
+                            gameController.updatePlayerWin(winningID); 
+                        }
+                        gameController.updateAnswerLabel(target);
+                    });
+                } else {
+                	
+                    Platform.runLater(() -> gameController.updateAnswerLabel(target));
+                }
+
+                return;
+            }else if (receivedPacket instanceof NextRound) {
+ 
+            	NextRound msg = (NextRound) receivedPacket;
+            	String target = msg.getTarget();
+
+           	Platform.runLater(() -> gameController.updateAnswerLabel(target));
+
+            	new Thread(() -> {
+                    try {
+                 
+                        Platform.runLater(() -> gameController.flashRed());
+
+                        Thread.sleep(1500);
+
+                        Platform.runLater(() -> gameController.resetRound());
+                    } catch (InterruptedException ignored) {}
+               }).start();
+        
+           	
+            }
+
+   
+        }
         
         if (receivedPacket instanceof MaxPlayers) {
             MaxPlayers msg = (MaxPlayers) receivedPacket;
@@ -162,6 +238,11 @@ public class Client implements Runnable {
             PlayerConnected msg = (PlayerConnected) receivedPacket;
             int id = msg.getClientID();
             String name = msg.getName();
+            
+            if (UserConfigs.getClientName().equals(name) && UserConfigs.getMyClientID() == -1) {
+                UserConfigs.setMyClientID(id); // Store this specific client's ID
+                System.out.println("Assigned my ClientID: " + id); // For debugging
+            }
             
             while (connectedPlayers.size() <= id) {
                 connectedPlayers.add(null);
@@ -199,6 +280,32 @@ public class Client implements Runnable {
         } else {
             System.out.println("Client received an unknown object: " + receivedPacket.getClass().getName());
         }
+    }
+    
+    public void disconnectAndReturnHome() {
+        try {
+            if (output != null) output.close();
+            if (input != null) input.close();
+        } catch (Exception ignored) {}
+
+        Client.currentClientInstance = null;
+
+        // Return to home screen safely
+        Platform.runLater(() -> {
+            SceneLoader.LoadedScene<?> home = SceneLoader.load("Scene1");
+            Stage stage = getCurrentStage();
+            if (stage != null) {
+                stage.setScene(home.scene);
+            }
+        });
+    }
+    
+    private Stage getCurrentStage() {
+        return (Stage) javafx.stage.Window.getWindows()
+                .stream()
+                .filter(Window::isShowing)
+                .findFirst()
+                .orElse(null);
     }
 
     public static void main(String[] args) {

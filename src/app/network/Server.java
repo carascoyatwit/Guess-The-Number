@@ -12,11 +12,13 @@ public class Server {
     private ArrayList<HandleClient> clients = new ArrayList<>();
     private List<PlayerData> players = Collections.synchronizedList(new ArrayList<>());
     private int max;
+    private final List<String> guesses = Collections.synchronizedList(new ArrayList<>());
+    private int targetNumber;
     
     public Server() {
     	
     	this.max = UserConfigs.getSetClients();
-    	
+    	generateNewTarget();
     	try {
 			serverSocket = new ServerSocket(UserConfigs.getServerPort());
 			System.out.println("Server started on port " + UserConfigs.getServerPort());
@@ -91,6 +93,43 @@ private  class HandleClient implements Runnable{
                 
                 //can handle any other messages that is a string
                 
+            } else if (obj instanceof PlayerGuessed) { 
+                PlayerGuessed guessedPacket = (PlayerGuessed) obj;
+                int id = guessedPacket.getClientID();
+                String guess = guessedPacket.getGuess();
+
+                System.out.printf("Client %d (%s) guessed: %s\n", id, name, guess);
+
+               
+                while (guesses.size() <= id) {
+                    guesses.add(null);
+                }
+
+                
+                guesses.set(id, guess);
+
+               
+                broadcastToAll(guessedPacket);
+
+                
+                boolean allGuessed = true;
+                for (int i = 0; i < players.size(); i++) {
+                    if (i >= guesses.size() || guesses.get(i) == null) {
+                        allGuessed = false;
+                        break;
+                    }
+                }
+
+                if (allGuessed) {
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(1500); 
+                        } catch (InterruptedException ignored) {}
+
+                        revealWinners(); 
+                    }).start();
+                }
+
             }
         }
         
@@ -102,6 +141,7 @@ private  class HandleClient implements Runnable{
              players.removeIf(p -> p.getName().equals(name));
              UserConfigs.decrementClients();
              broadcastToAll(new PlayerDisconnect(clientID));
+             clients.remove(this);
              
              
 		}finally {
@@ -113,6 +153,38 @@ private  class HandleClient implements Runnable{
 		}
 	}
 }
+
+private void revealWinners() {
+
+    ArrayList<Integer> winners = new ArrayList<>();
+
+    for (int i = 0; i < guesses.size(); i++) {
+        if (guesses.get(i) != null && Integer.parseInt(guesses.get(i)) == targetNumber) {
+            winners.add(i);
+        }
+    }
+
+    if (!winners.isEmpty()) {
+        System.out.println("Winner is player " + winners);
+        broadcastToAll(new PlayerWin(true, winners, String.valueOf(targetNumber))); // send all winners;
+    } else {
+    	 System.out.println("No player guessed correctly.");
+         broadcastToAll(new PlayerWin(false, new ArrayList<>(), String.valueOf(targetNumber)));
+         broadcastToAll(new NextRound(String.valueOf(targetNumber)));
+    }
+    
+    for (int i = 0; i < guesses.size(); i++) {
+        guesses.set(i, null);
+    }
+    
+    generateNewTarget();
+}
+
+private void generateNewTarget() {
+    targetNumber = 1 + (int)(Math.random() * 20);
+    System.out.println("New target number: " + targetNumber);
+}
+
     	
 private void broadcastToAll(Message message) {
     for (HandleClient c : clients) {

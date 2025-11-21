@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import app.*;
 import app.packets.*;
@@ -187,14 +188,25 @@ private void generateNewTarget() {
 
     	
 private void broadcastToAll(Message message) {
-    for (HandleClient c : clients) {
-        try {
-            if (c.output != null) {
-                c.output.writeObject(message);
-                c.output.flush();
+	synchronized (clients) {
+        Iterator<HandleClient> iterator = clients.iterator();
+        while (iterator.hasNext()) {
+            HandleClient c = iterator.next();
+
+            if (c.socket == null || c.socket.isClosed() || !c.socket.isConnected()) {
+                iterator.remove();
+                continue;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            try {
+                if (c.output != null) {
+                    c.output.writeObject(message);
+                    c.output.flush();
+                }
+            } catch (IOException e) {
+                System.out.printf("Client %d disconnected during broadcast.\n", c.clientID);
+                iterator.remove();
+            }
         }
     }
 }

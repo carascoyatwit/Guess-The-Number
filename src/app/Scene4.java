@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import app.network.Client;
 import app.packets.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class Scene4 {
@@ -25,6 +28,12 @@ public class Scene4 {
 	@FXML
 	private HBox bottomHBox;
 	
+	@FXML 
+	private HBox utilHBox;
+	
+	@FXML
+	private Button backButton;
+	
 	private ArrayList<Label> playerLabels = new ArrayList<>();
 	private Button exitButton = new Button("Exit");
 	
@@ -32,11 +41,20 @@ public class Scene4 {
 		centerVBox.setSpacing(90);
 		centerHBox.setSpacing(50);
 		
-		exitButton.setOnAction(e -> {
+		exitButton.setOnAction(e ->	 {
 		    if (Client.currentClientInstance != null) {
 		        Client.currentClientInstance.disconnectAndReturnHome();
 		    }
 		});
+		
+		Image icon = new Image(getClass().getResourceAsStream("icons/backIcon.png")); 
+		ImageView iconView = new ImageView(icon);
+		iconView.setFitWidth(30);
+		iconView.setFitHeight(30);
+		backButton.setGraphic(iconView);
+		
+		utilHBox.setPadding(new Insets(30, 0, 0 ,0));
+		emptyNode(utilHBox, 0, 150, false);
 		
 		
 		String normalStyle = 
@@ -116,6 +134,21 @@ public class Scene4 {
 	            centerHBox.getChildren().add(lbl);
 	        }
 	    }
+	 
+	 public static Region emptyNode(Pane pane, int index, double size, boolean isVertical) {
+		    Region spacer = new Region();
+		    if (isVertical) { // set true if you want a Vbox spacer or a false if you want an Hbox spacer
+		        spacer.setMinHeight(size);
+		        spacer.setPrefHeight(size);
+		        spacer.setMaxHeight(size);
+		    } else {
+		        spacer.setMinWidth(size);
+		        spacer.setPrefWidth(size);
+		        spacer.setMaxWidth(size);
+		    }
+		    pane.getChildren().add(index, spacer);
+		    return spacer;
+		}
 	 
 	 public void updateDisconnected(int clientID) {
 	        if (clientID >= 0 && clientID < playerLabels.size()) {

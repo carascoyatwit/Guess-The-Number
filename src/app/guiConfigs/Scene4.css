@@ -32,6 +32,15 @@
     -fx-background-color: #FFFFFFAA;
 }
 
+#backButton {
+	 -fx-padding: 20;
+    -fx-background-color: #1A1A2F;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15px;
+    -fx-pref-width: -1;   
+    -fx-pref-height: -1; 
+}
+
 #guessInput {
     -fx-background-color: #2A2A40;
     -fx-text-fill: #FFFFFF;

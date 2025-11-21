@@ -30,7 +30,12 @@ public class Scene3 {
         
         new Thread(new Client()).start();
         
-        cancelButton.setOnAction(e -> leaveGame());
+        //cancelButton.setOnAction(e -> leaveGame());
+        cancelButton.setOnAction(e -> {
+		    if (Client.currentClientInstance != null) {
+		        Client.currentClientInstance.disconnectAndReturnHome();
+		    }
+		});
 
     }
     

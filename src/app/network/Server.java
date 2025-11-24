@@ -182,7 +182,7 @@ private void revealWinners() {
 }
 
 private void generateNewTarget() {
-    targetNumber = 1 + (int)(Math.random() * 20);
+    targetNumber = 1 + (int)(Math.random() * 100);
     System.out.println("New target number: " + targetNumber);
 }
 

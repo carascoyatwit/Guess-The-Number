@@ -99,21 +99,26 @@ public class Scene4 {
 		 
 		 guessInput.setOnAction(event -> {
 		        sendGuess(guessInput.getText());
-		        guessInput.setDisable(true); // Disable input after guessing
-		        guessInput.clear(); // Clear the text field
+		        guessInput.setDisable(true); 
+		        guessInput.clear(); 
 		    });
 		 
 	}
 	
     private void sendGuess(String guess) {
         if (Client.currentClientInstance != null) {
-            int myClientID = UserConfigs.getMyClientID(); // Get the client's stored ID
-            if (myClientID != -1) { // Ensure the ID has been set
+            int myClientID = UserConfigs.getMyClientID(); 
+            if (myClientID != -1) { 
+            	
                 Client.currentClientInstance.sendToServer(new PlayerGuessed(myClientID, guess));
+                
             } else {
+            	
                 System.err.println("Cannot send guess: Client ID not yet assigned.");
             }
+            
         } else {
+        	
             System.err.println("Cannot send guess: Client not connected.");
         }
     }
@@ -122,7 +127,7 @@ public class Scene4 {
 	        playerLabels.clear();
 	        centerHBox.getChildren().clear();
 
-	        for (PlayerData player : connectedPlayers) {
+	      for (PlayerData player : connectedPlayers) {
 	            Label lbl = new Label(player.getName());
 	            lbl.setStyle(
 	                    "-fx-text-fill: #ADD8E6;" + 
@@ -184,17 +189,16 @@ public class Scene4 {
 	        if (clientID >= 0 && clientID < playerLabels.size()) {
 	            Label lbl = playerLabels.get(clientID);
 	        
-	            if (lbl != null) {
-	                String originalName = lbl.getText().split(" \\(")[0]; 
-	                lbl.setText(originalName + " (Winner!)");
-	                lbl.setStyle("-fx-text-fill: #FFD700; -fx-border-color: #FFD700; -fx-background-color: #FFD70080;");
+	          if (lbl != null) {
+	              String originalName = lbl.getText().split(" \\(")[0]; 
+	             lbl.setText(originalName + " (Winner!)");
+	              lbl.setStyle("-fx-text-fill: #FFD700; -fx-border-color: #FFD700; -fx-background-color: #FFD70080;");
 	              
 	            }
-	        }
-	        
-	        int index = bottomHBox.getChildren().indexOf(guessInput);
-	        if (index != -1) {
-	            // Replace the old label with the new label
+	        }        
+	     int index = bottomHBox.getChildren().indexOf(guessInput);
+	     if (index != -1) {
+	     
 	            bottomHBox.getChildren().set(index, exitButton);
 	        }
 	        
@@ -217,11 +221,11 @@ public class Scene4 {
 		    guessInput.setDisable(false);
 		    guessInput.clear();
 
-		    for (Label lbl : playerLabels) {
+    for (Label lbl : playerLabels) {
 		        if (lbl != null) {
-		            String originalName = lbl.getText().split(" \\(")[0]; 
-		            lbl.setText(originalName);
-		            lbl.setStyle(
+	          String originalName = lbl.getText().split(" \\(")[0]; 
+		         lbl.setText(originalName);
+		          lbl.setStyle(
 		                "-fx-text-fill: #ADD8E6;" + 
 		                "-fx-font-size: 20px;" +
 		                "-fx-font-weight: bold;" + 
@@ -232,8 +236,8 @@ public class Scene4 {
 		                "-fx-border-radius: 15px;" +
 		                "-fx-font-family: \"Nunito\";"
 		            );
-		     }
-		        }
+		   }
+		    }
 		    
 		    
             answerlabel.setText("???");

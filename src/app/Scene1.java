@@ -138,27 +138,26 @@ private void joinGame() {
 		dialog.setContentText("IP:");
 		styleDialog(dialog);
 		
-		Optional<String> result = dialog.showAndWait();
-		return result.orElse(null);
-		}
+	Optional<String> result = dialog.showAndWait();
+		 return result.orElse(null);
+}
 	
-	private Integer askForPort() {
+	 private Integer askForPort() {
 		TextInputDialog dialog = new TextInputDialog(String.valueOf(UserConfigs.getServerPort()));
 		dialog.setTitle("Host Port");
 		dialog.setHeaderText("Enter Host Port");
 		dialog.setContentText("Port:");
 		styleDialog(dialog);
-		
 		Optional<String> result = dialog.showAndWait();
-		if (result.isPresent()) {
+		   if (result.isPresent()) {
 		    try {
-		        return Integer.parseInt(result.get());
+		           return Integer.parseInt(result.get());
 		    } catch (NumberFormatException e) {
 		        return UserConfigs.getServerPort(); 
 		    }
-		} else {
+		   } else {
 		    return null; 
-		}
+ }
 	}
 	
 	private void showConfigDialog() {
@@ -174,26 +173,21 @@ private void joinGame() {
 
 	    
 	    TextField nameField = new TextField(UserConfigs.getClientName());
-	    
-
 	    Spinner<Integer> setPlayersSpinner = new Spinner<>(2, 10, UserConfigs.getSetClients());
-
 	    TextField hostField = new TextField(UserConfigs.getServerHost());
-	   
-	    
 	    TextField portField = new TextField(String.valueOf(UserConfigs.getServerPort()));
 	    
 
-	    VBox content = new VBox(10);
+	      VBox content = new VBox(10);
 	    content.getChildren().addAll(
 	        new Label("Name:"), nameField,
 	        new Label("Max Players:"), setPlayersSpinner,
 	        new Label("Host IP:"), hostField,
-	        new Label("Server Port:"), portField
+	      new Label("Server Port:"), portField
 	    );
 	    pane.setContent(content);
 
-	    ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+   ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
 	    ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 	    dialog.getDialogPane().getButtonTypes().addAll(saveButton, cancelButton);
 
@@ -206,14 +200,14 @@ private void joinGame() {
 	            UserConfigs.setServerPort(Integer.parseInt(portField.getText()));
 	        }
 	        return null;
-	    });
+	   });
 	    dialog.showAndWait();
-	}
+}
 	
-	private void styleDialog(TextInputDialog dialog) {
+	    private void styleDialog(TextInputDialog dialog) {
 	    DialogPane pane = dialog.getDialogPane();
-	    pane.getStylesheets().add(getClass().getResource("guiConfigs/dialog.css").toExternalForm());
+	     pane.getStylesheets().add(getClass().getResource("guiConfigs/dialog.css").toExternalForm());
 	    pane.getStyleClass().add("dialog-pane");
-	}
+	  }
 
 }

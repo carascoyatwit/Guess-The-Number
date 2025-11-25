@@ -2,8 +2,7 @@ bin/
 
 # Eclipse specific files
 .settings/
-.classpath
-.project
+
 
 # OS-specific files
 .DS_Store
